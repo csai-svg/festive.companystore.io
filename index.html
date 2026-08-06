@@ -159,6 +159,7 @@ a{color:inherit}
 .thumb .ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
 .thumb .cat-tag{position:absolute;top:12px;left:12px;background:rgba(43,41,42,.72);color:#fff;font-size:.66rem;font-weight:700;letter-spacing:.04em;padding:5px 10px;border-radius:30px;backdrop-filter:blur(4px)}
 .thumb .badge-pill{position:absolute;top:12px;right:12px;display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,var(--gold-bright),var(--gold-deep));color:#3a2400;font-size:.66rem;font-weight:800;letter-spacing:.01em;padding:5px 10px;border-radius:30px;box-shadow:0 4px 12px rgba(231,184,76,.5)}
+.thumb .rank-pill{position:absolute;bottom:12px;left:12px;display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,var(--red-deep),var(--red));color:#fff;font-size:.66rem;font-weight:800;letter-spacing:.02em;padding:5px 10px;border-radius:30px;box-shadow:0 4px 12px rgba(142,15,23,.45);border:1px solid rgba(247,215,116,.7);z-index:2}
 .thumb .more{position:absolute;bottom:12px;right:12px;background:rgba(255,255,255,.94);color:var(--onyx);font-weight:800;font-size:.7rem;letter-spacing:.04em;padding:7px 12px;border-radius:30px;opacity:0;transform:translateY(6px);transition:.2s}
 .card:hover .more{opacity:1;transform:none}
 .card-body{padding:16px 16px 18px;display:flex;flex-direction:column;flex:1}
@@ -301,8 +302,8 @@ a{color:inherit}
     <div class="form-scroll">
       <div class="form-intro">
         <div class="eyebrow">✦ Diwali Collection 2026</div>
-        <h1>Get in touch to see the <span class="glow">full catalog</span>.</h1>
-        <p>Curated corporate gifting, designed and delivered — from our studio to your team's doorstep. Tell us who you are and we'll light it up.</p>
+        <h1>Play Your Best Hand <span class="glow">This Diwali</span>.</h1>
+        <p>Curated gifts that delight every generation, long after the celebrations.</p>
       </div>
 
       <form id="leadForm" novalidate>
@@ -351,8 +352,8 @@ a{color:inherit}
   <div class="catalog-hero">
     <div class="wrap">
       <div class="eyebrow">Diwali Collection 2026</div>
-      <h1>Gifts that glow with your brand.</h1>
-      <p>Browse the range, add favourites to your gift box, and request a quote — our team takes it from there.</p>
+      <h1>Gifts worth unboxing</h1>
+      <p>Because the best gifts become part of everyday life</p>
     </div>
   </div>
 
@@ -421,7 +422,7 @@ a{color:inherit}
    ============================================================ */
 const CONFIG = {
   endpoint:"https://diwali-leads.cs-ai.workers.dev",  // Cloudflare Worker that records leads to the Sheet
-  productsCsvUrl:"",  // "Publish to web" CSV link of the Products tab; blank = use placeholders below
+  productsCsvUrl:"https://diwali-leads.cs-ai.workers.dev/products",  // Worker GET endpoint that streams the Products tab as CSV
   currency:"₹"
 };
 
@@ -551,23 +552,23 @@ const FW=(function(){
     const R=region||{x:0,y:0,w:cv.width,h:cv.height};
     const sx=rand(R.x+R.w*0.2,R.x+R.w*0.8);
     rockets.push({x:sx,y:R.y+R.h+10,px:sx,py:R.y+R.h+10,
-      ty:rand(R.y+R.h*0.12,R.y+R.h*0.45),
-      vx:rand(-0.6,0.6),vy:rand(-13.5,-11),scale:scale||1,
+      ty:rand(R.y+R.h*0.08,R.y+R.h*0.4),
+      vx:rand(-0.7,0.7),vy:rand(-15,-12.2),scale:scale||1,
       scheme:SCHEMES[(Math.random()*SCHEMES.length)|0]});
   }
   function explode(x,y,scheme,scale){
     scale=scale||1;
-    const n=((58+rand(0,48))*scale)|0;
-    const power=rand(3.2,5.8)*scale;
+    const n=((92+rand(0,70))*scale)|0;
+    const power=rand(4.4,7.6)*scale;
     const ring=Math.random()<0.4; // some bursts are crisp rings
     for(let i=0;i<n;i++){
       const a=(i/n)*Math.PI*2 + rand(-0.05,0.05);
       const sp=ring?power*rand(.9,1.05):power*Math.pow(Math.random(),.5);
       sparks.push({x,y,px:x,py:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,
         life:1,decay:rand(.006,.014),color:scheme[(Math.random()*scheme.length)|0],
-        size:rand(1.2,2.6)*Math.min(scale,1.4),twinkle:Math.random()<.5});
+        size:rand(1.6,3.2)*Math.min(scale,1.5),twinkle:Math.random()<.5});
     }
-    sparks.push({x,y,px:x,py:y,vx:0,vy:0,life:1,decay:.05,color:'#ffffff',size:9*scale,flash:true});
+    sparks.push({x,y,px:x,py:y,vx:0,vy:0,life:1,decay:.045,color:'#ffffff',size:13*scale,flash:true});
   }
   function step(){
     ctx.clearRect(0,0,cv.width,cv.height);
@@ -596,9 +597,9 @@ const FW=(function(){
   function run(){if(!raf)raf=requestAnimationFrame(step);}
   return {
     // ambient shells confined to the form panel
-    ambient(count=2){if(reduce)return;const R=formRegion();CLIP=R;for(let k=0;k<count;k++)setTimeout(()=>{launch(R,0.85);run();},k*260);},
-    // big full-screen celebration
-    finale(){if(reduce)return;CLIP=null;for(let k=0;k<16;k++)setTimeout(()=>{launch(null,1.6);run();},k*140);}
+    ambient(count=2){if(reduce)return;const R=formRegion();CLIP=R;for(let k=0;k<count;k++)setTimeout(()=>{launch(R,1.05);run();},k*240);},
+    // big full-screen celebration — bigger rockets, denser bursts, longer run
+    finale(){if(reduce)return;CLIP=null;for(let k=0;k<26;k++)setTimeout(()=>{launch(null,rand(1.8,2.3));run();},k*130);}
   };
 })();
 
@@ -679,7 +680,7 @@ function renderGrid(){
   if(!list.length){grid.innerHTML=`<div class="empty"><h3>Nothing here yet</h3><p>Try another category.</p></div>`;return;}
   grid.innerHTML=list.map((p,i)=>`
     <article class="card" style="animation-delay:${Math.min(i*40,320)}ms">
-      <div class="thumb" data-open="${p.id}">${media(p)}<span class="cat-tag">${p.cat}</span>${p.badge?`<span class="badge-pill">${(p.icon||'⭐')} ${p.badge}</span>`:''}<span class="more">View more +</span></div>
+      <div class="thumb" data-open="${p.id}">${media(p)}<span class="cat-tag">${p.cat}</span>${p.badge?`<span class="badge-pill">${(p.icon||'⭐')} ${p.badge}</span>`:''}${p.rank?`<span class="rank-pill">★ Ranked #${p.rank}</span>`:''}<span class="more">View more +</span></div>
       <div class="card-body">
         <div class="card-name">${p.name}</div>
         <div class="card-desc">${p.desc}</div>
