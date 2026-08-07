@@ -57,6 +57,8 @@ a{color:inherit}
   radial-gradient(120% 90% at 30% 20%, #ff4b4f 0%, var(--red) 34%, var(--red-deep) 74%, var(--red-dark) 100%);
   display:flex;align-items:center;justify-content:center}
 .media-fill{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.form-plush{position:absolute;top:56px;right:24px;width:58px;height:auto;z-index:6;pointer-events:none;filter:drop-shadow(0 12px 18px rgba(0,0,0,.35));animation:float 3.6s ease-in-out infinite}
+@media(max-width:560px){.form-plush{width:44px;top:34px;right:14px}}
 .logo-chip{position:absolute;top:22px;left:22px;z-index:4;background:#fff;border-radius:40px;
   padding:10px 16px;box-shadow:0 8px 22px rgba(0,0,0,.18);display:flex;align-items:center}
 .logo-chip img{height:22px;width:auto;display:block}
@@ -292,6 +294,7 @@ a{color:inherit}
   <!-- RIGHT · FESTIVE FORM -->
   <div class="form-side">
     <div class="bulbs" id="bulbs"></div>
+    <img class="form-plush" data-plush src="" alt="" aria-hidden="true" />
     <svg class="rangoli-f" viewBox="0 0 200 200" fill="none"><g stroke="#F7D774" stroke-width="1.4"><circle cx="100" cy="100" r="92"/><circle cx="100" cy="100" r="66"/><circle cx="100" cy="100" r="40"/></g></svg>
 
     <div class="form-scroll">
@@ -548,22 +551,23 @@ const FW=(function(){
     const sx=rand(R.x+R.w*0.2,R.x+R.w*0.8);
     rockets.push({x:sx,y:R.y+R.h+10,px:sx,py:R.y+R.h+10,
       ty:rand(R.y+R.h*0.08,R.y+R.h*0.4),
-      vx:rand(-0.7,0.7),vy:rand(-15,-12.2),scale:scale||1,
+      vx:rand(-0.7,0.7),vy:rand(-13.5,-11.5),scale:scale||1,
       scheme:SCHEMES[(Math.random()*SCHEMES.length)|0]});
   }
   function explode(x,y,scheme,scale){
     scale=scale||1;
-    const n=((92+rand(0,70))*scale)|0;
-    const power=rand(4.4,7.6)*scale;
+    if(sparks.length>1700) return;               // guard against frame-rate collapse
+    const n=((46+rand(0,34))*Math.min(scale,1.7))|0;
+    const power=rand(3.4,5.6)*Math.min(scale,1.7);
     const ring=Math.random()<0.4; // some bursts are crisp rings
     for(let i=0;i<n;i++){
       const a=(i/n)*Math.PI*2 + rand(-0.05,0.05);
       const sp=ring?power*rand(.9,1.05):power*Math.pow(Math.random(),.5);
       sparks.push({x,y,px:x,py:y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,
-        life:1,decay:rand(.006,.014),color:scheme[(Math.random()*scheme.length)|0],
-        size:rand(1.6,3.2)*Math.min(scale,1.5),twinkle:Math.random()<.5});
+        life:1,decay:rand(.013,.024),color:scheme[(Math.random()*scheme.length)|0],
+        size:rand(1.3,2.6)*Math.min(scale,1.35),twinkle:Math.random()<.5});
     }
-    sparks.push({x,y,px:x,py:y,vx:0,vy:0,life:1,decay:.045,color:'#ffffff',size:13*scale,flash:true});
+    sparks.push({x,y,px:x,py:y,vx:0,vy:0,life:1,decay:.06,color:'#ffffff',size:9*scale,flash:true});
   }
   function step(){
     ctx.clearRect(0,0,cv.width,cv.height);
@@ -575,7 +579,7 @@ const FW=(function(){
       ctx.strokeStyle=r.scheme[0];ctx.lineWidth=2.4;ctx.globalAlpha=1;
       ctx.beginPath();ctx.moveTo(r.px,r.py);ctx.lineTo(r.x,r.y);ctx.stroke();
       ctx.globalAlpha=.9;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(r.x,r.y,1.6,0,7);ctx.fill();
-      if(r.vy>=-2 || r.y<=r.ty){explode(r.x,r.y,r.scheme,r.scale);rockets.splice(i,1);}
+      if(r.vy>=-2 || r.y<=r.ty || r.y<-10){explode(r.x,r.y,r.scheme,r.scale);rockets.splice(i,1);}
     }
     for(let i=sparks.length-1;i>=0;i--){
       const s=sparks[i];s.px=s.x;s.py=s.y;s.x+=s.vx;s.y+=s.vy;s.vy+=0.05;s.vx*=0.985;s.vy*=0.985;s.life-=s.decay;
@@ -587,14 +591,15 @@ const FW=(function(){
       if(s.life<=0)sparks.splice(i,1);
     }
     ctx.restore();ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
-    if(rockets.length||sparks.length)raf=requestAnimationFrame(step);else raf=null;
+    if(rockets.length||sparks.length)raf=requestAnimationFrame(step);
+    else{ctx.clearRect(0,0,cv.width,cv.height);raf=null;}   // wipe clean, no lingering
   }
   function run(){if(!raf)raf=requestAnimationFrame(step);}
   return {
     // ambient shells confined to the form panel
-    ambient(count=2){if(reduce)return;const R=formRegion();CLIP=R;for(let k=0;k<count;k++)setTimeout(()=>{launch(R,1.05);run();},k*240);},
-    // big full-screen celebration — bigger rockets, denser bursts, longer run
-    finale(){if(reduce)return;CLIP=null;for(let k=0;k<34;k++)setTimeout(()=>{launch(null,rand(2.0,2.8));run();},k*105);}
+    ambient(count=2){if(reduce)return;const R=formRegion();CLIP=R;for(let k=0;k<count;k++)setTimeout(()=>{launch(R,0.9);run();},k*260);},
+    // big full-screen celebration — punchy bursts that clear quickly
+    finale(){if(reduce)return;CLIP=null;for(let k=0;k<18;k++)setTimeout(()=>{launch(null,rand(1.5,2.0));run();},k*120);}
   };
 })();
 
