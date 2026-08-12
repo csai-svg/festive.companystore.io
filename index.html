@@ -49,8 +49,8 @@ a{color:inherit}
 .view.active{display:block}
 
 /* ==================== LANDING (image left · form right) ==================== */
-#landing.active{display:grid}
-#landing{grid-template-columns:1fr 1fr;min-height:100vh;min-height:100dvh}
+#landing.active{display:block}
+.landing-split{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;min-height:100dvh}
 
 /* --- LEFT: swappable image --- */
 .media-side{position:relative;overflow:hidden;background:
@@ -255,7 +255,7 @@ a{color:inherit}
 
 /* ==================== RESPONSIVE ==================== */
 @media(max-width:860px){
-  #landing.active{grid-template-columns:1fr}
+  .landing-split{grid-template-columns:1fr}
   .media-side{min-height:40vh}
   .form-scroll{padding:64px 28px 120px}
   .modal-card{grid-template-columns:1fr;max-height:88vh}
@@ -275,6 +275,48 @@ a{color:inherit}
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:.001s!important;transition-duration:.05s!important}
 }
+/* ==================== WHY-CHOOSE STRIP (landing) ==================== */
+.why-strip{background:var(--white);border-top:5px solid var(--red);width:100%}
+.why-wrap{max-width:1240px;margin:0 auto;padding:26px 24px 30px}
+.why-wrap h2{font-size:clamp(1.2rem,2.4vw,1.6rem);font-weight:800;margin-bottom:18px;color:var(--onyx)}
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.why-item{display:flex;align-items:flex-start;gap:12px;padding:6px 22px;border-left:1px solid var(--line)}
+.why-item:first-child{border-left:none;padding-left:0}
+.why-ic{font-size:1.4rem;line-height:1}
+.why-item b{display:block;font-size:.98rem;font-weight:800;color:var(--onyx);line-height:1.2}
+.why-item span{display:block;font-size:.82rem;color:var(--slate);margin-top:3px}
+@media(max-width:860px){.why-grid{grid-template-columns:repeat(2,1fr);gap:18px 0}.why-item{border-left:none;padding-left:0}.why-item:nth-child(even){border-left:1px solid var(--line);padding-left:22px}}
+@media(max-width:520px){.why-grid{grid-template-columns:1fr}.why-item:nth-child(even){border-left:none;padding-left:0}}
+
+/* ==================== GIFTING TIERS (catalog) ==================== */
+.tiers{background:var(--cream);border-bottom:1px solid var(--line)}
+.tiers-wrap{max-width:1240px;margin:0 auto;padding:34px 24px 30px}
+.tiers-wrap h2{font-size:clamp(1.4rem,2.6vw,1.9rem);font-weight:800;color:var(--onyx)}
+.tiers-sub{color:var(--slate);margin:6px 0 16px;font-size:.98rem}
+.tiers-note{background:#fff8e6;border:1px dashed var(--gold-deep);color:#7a5b12;font-size:.84rem;font-weight:600;padding:10px 14px;border-radius:12px;margin-bottom:20px}
+.tier-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.tier-card{position:relative;background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:26px 22px 24px;display:flex;flex-direction:column;transition:transform .18s,box-shadow .18s,border-color .18s}
+.tier-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:rgba(231,184,76,.6)}
+.tier-card.active{border-color:var(--red);border-width:2px;box-shadow:0 14px 40px rgba(229,29,35,.14)}
+.tier-badge{position:absolute;top:-13px;left:22px;background:var(--red);color:#fff;font-size:.72rem;font-weight:800;padding:5px 12px;border-radius:30px;box-shadow:0 6px 14px rgba(229,29,35,.35)}
+.tier-name{font-size:1.25rem;font-weight:800;color:var(--onyx);margin-bottom:8px}
+.tier-price{font-size:1.8rem;font-weight:800;color:var(--red);line-height:1;letter-spacing:-.01em}
+.tier-unit{color:var(--slate);font-size:.86rem;margin:6px 0 16px}
+.tier-feats{list-style:none;margin:0 0 20px;flex:1}
+.tier-feats li{position:relative;padding:6px 0 6px 20px;font-size:.9rem;color:var(--onyx)}
+.tier-feats li::before{content:"";position:absolute;left:0;top:12px;width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.tier-cta{width:100%;padding:13px 16px;border-radius:40px;font-weight:800;font-size:.92rem;background:var(--cream);border:1.5px solid var(--line);color:var(--onyx);transition:background .15s,color .15s,transform .1s}
+.tier-cta:hover{border-color:var(--gold)}
+.tier-card.active .tier-cta,.tier-card.feature .tier-cta{background:var(--red);color:#fff;border-color:var(--red)}
+.tier-cta:active{transform:scale(.97)}
+.tiers-foot{margin-top:18px;background:#eef7f0;border:1px solid #cfe9d6;color:#1f6b3a;font-size:.9rem;font-weight:600;padding:12px 16px;border-radius:12px}
+.tiers-foot b{color:#14532d}
+@media(max-width:860px){.tier-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.tier-grid{grid-template-columns:1fr}}
+
+/* MOQ note on cards / modal */
+.card-moq{font-size:.74rem;font-weight:700;color:var(--gold-deep);margin:-6px 0 10px}
+.moq-inline{font-size:.8rem;font-weight:700;color:var(--slate)}
 </style>
 </head>
 <body>
@@ -283,6 +325,7 @@ a{color:inherit}
 
 <!-- ============================= LANDING ============================= -->
 <section id="landing" class="view active">
+  <div class="landing-split">
 
   <!-- LEFT · hero image -->
   <div class="media-side" id="mediaSide">
@@ -336,6 +379,20 @@ a{color:inherit}
     <!-- diyas -->
     <div class="diyas" id="diyas"></div>
   </div>
+  </div><!-- /.landing-split -->
+
+  <!-- WHY CHOOSE strip -->
+  <section class="why-strip">
+    <div class="why-wrap">
+      <h2>Why choose CompanyStore?</h2>
+      <div class="why-grid">
+        <div class="why-item"><div class="why-ic">🚚</div><div><b>Delivery by Diwali</b><span>Order cutoff: [set date]</span></div></div>
+        <div class="why-item"><div class="why-ic">📦</div><div><b>MOQ from [X] units</b><span>Bulk-ready</span></div></div>
+        <div class="why-item"><div class="why-ic">🎨</div><div><b>Logo branding included</b><span>[turnaround] days</span></div></div>
+        <div class="why-item"><div class="why-ic">🚀</div><div><b>6,000,000+ orders shipped</b><span>Trusted at scale</span></div></div>
+      </div>
+    </div>
+  </section>
 </section>
 
 <!-- ============================= CATALOG ============================= -->
@@ -354,6 +411,17 @@ a{color:inherit}
       <p>Because the best gifts become part of everyday life</p>
     </div>
   </div>
+
+  <!-- GIFTING TIERS -->
+  <section class="tiers" id="tiers">
+    <div class="tiers-wrap">
+      <h2>Pick a gifting tier — priced per person</h2>
+      <p class="tiers-sub">Buyers budget per head. Lead with that, then customise.</p>
+      <div class="tiers-note">💡 Prices below are placeholders — set your real per-head bands in the code (CONFIG.tierBands) or add a “Tier” column to the sheet.</div>
+      <div class="tier-grid" id="tierGrid"></div>
+      <div class="tiers-foot">✔ The catalog grid lives below — categories are a <b>secondary filter</b> inside “Build your own box”, not the front door.</div>
+    </div>
+  </section>
 
   <nav class="filters"><div class="filters-inner" id="filters"></div></nav>
   <main class="grid" id="grid"></main>
@@ -421,7 +489,10 @@ a{color:inherit}
 const CONFIG = {
   endpoint:"https://diwali-leads.cs-ai.workers.dev",  // Cloudflare Worker that records leads to the Sheet
   productsCsvUrl:"https://diwali-leads.cs-ai.workers.dev/products",  // Worker GET endpoint that streams the Products tab as CSV
-  currency:"₹"
+  currency:"₹",
+  // Per-item INR bands used to sort products into tiers when the sheet has no "Tier" column.
+  // Adjust these, or add a Tier column (Token/Signature/Statement) to the sheet for true curation.
+  tierBands:{token:600, signature:2000}
 };
 
 /* ---------- festive decor build ---------- */
@@ -514,7 +585,7 @@ function priceLabel(p){return p.price==null?"On request":CONFIG.currency+p.price
 /* ============================================================
    STATE + LEAD → SHEET
    ============================================================ */
-const state={lead:null,sessionId:"cs-"+Date.now().toString(36)+Math.random().toString(36).slice(2,7),filter:"All",cart:{}};
+const state={lead:null,sessionId:"cs-"+Date.now().toString(36)+Math.random().toString(36).slice(2,7),filter:"All",tier:null,cart:{}};
 function submitLead(type,extra={}){
   const payload=Object.assign({type,sessionId:state.sessionId,timestamp:new Date().toISOString(),
     name:state.lead?.name||"",email:state.lead?.email||"",phone:state.lead?.phone||"",org:state.lead?.org||""},extra);
@@ -666,16 +737,45 @@ $('#leadForm').addEventListener('submit',e=>{
 /* ============================================================
    CATALOG
    ============================================================ */
+/* ---------- gifting tiers ---------- */
+const TIERS=[
+  {key:'Token',name:'The Token',price:'₹[ ___ ]',unit:'per person',feats:['1–2 everyday-useful items','Festive outer box','Logo on box','Greeting card'],cta:'Choose'},
+  {key:'Signature',name:'The Signature',price:'₹[ ___ ]',unit:'per person',badge:'Most chosen',feature:true,feats:['3–4 curated items','Premium rigid box','Logo + custom insert','Personalised note'],cta:'Choose'},
+  {key:'Statement',name:'The Statement',price:'₹[ ___ ]',unit:'per person',feats:['Premium hero item + extras','Keepsake packaging','Full co-brand','For clients / leadership'],cta:'Choose'},
+  {key:'all',name:'Build your own box',price:'Custom',unit:'mix & match',feats:['Start from any tier','Swap items in / out','Live per-head estimate','Curator help on request'],cta:'Start building'}
+];
+function tierMatch(p){
+  const t=state.tier;
+  if(!t||t==='all')return true;
+  if(p.tier)return String(p.tier).toLowerCase()===t.toLowerCase();   // explicit sheet Tier column
+  const pr=p.price,b=CONFIG.tierBands;                                // else fall back to price bands
+  if(pr==null)return t==='Statement';
+  if(t==='Token')return pr<=b.token;
+  if(t==='Signature')return pr>b.token&&pr<=b.signature;
+  if(t==='Statement')return pr>b.signature;
+  return true;
+}
+function renderTiers(){
+  const g=$('#tierGrid');if(!g)return;
+  g.innerHTML=TIERS.map(t=>`
+    <div class="tier-card ${t.feature?'feature':''} ${state.tier===t.key?'active':''}">
+      ${t.badge?`<span class="tier-badge">${t.badge}</span>`:''}
+      <div class="tier-name">${t.name}</div>
+      <div class="tier-price">${t.price}</div>
+      <div class="tier-unit">${t.unit}</div>
+      <ul class="tier-feats">${t.feats.map(f=>`<li>${f}</li>`).join('')}</ul>
+      <button class="tier-cta" data-tier="${t.key}">${state.tier===t.key?'✓ Selected':t.cta}</button>
+    </div>`).join('');
+}
 function renderFilters(){
   const hasBadges=PRODUCTS.some(p=>p.badge);
   const chips=['All',...(hasBadges?['★ Featured']:[]),...CATEGORIES.filter(c=>c!=='All')];
   $('#filters').innerHTML=chips.map(c=>`<button class="chip ${c===state.filter?'active':''}" data-cat="${c}">${c}</button>`).join('');
 }
 function renderGrid(){
-  let list;
-  if(state.filter==="All")list=PRODUCTS;
-  else if(state.filter==="★ Featured")list=PRODUCTS.filter(p=>p.badge);
-  else list=PRODUCTS.filter(p=>p.cat===state.filter);
+  let list=PRODUCTS.filter(tierMatch);                       // tier sets the pool
+  if(state.filter==="★ Featured")list=list.filter(p=>p.badge);
+  else if(state.filter!=="All")list=list.filter(p=>p.cat===state.filter);  // category refines within tier
   const grid=$('#grid');
   if(!list.length){grid.innerHTML=`<div class="empty"><h3>Nothing here yet</h3><p>Try another category.</p></div>`;return;}
   grid.innerHTML=list.map((p,i)=>`
@@ -684,6 +784,7 @@ function renderGrid(){
       <div class="card-body">
         <div class="card-name">${p.name}</div>
         <div class="card-desc">${p.desc}</div>
+        ${p.moq?`<div class="card-moq">MOQ ${p.moq}+ units</div>`:''}
         <div class="card-foot">
           <div class="price">${p.price==null?'<small>On request</small>':CONFIG.currency+p.price.toLocaleString('en-IN')}</div>
           <button class="add ${state.cart[p.id]?'added':''}" data-add="${p.id}">${state.cart[p.id]?'✓ Added':'Add to Cart'}</button>
@@ -691,7 +792,7 @@ function renderGrid(){
       </div>
     </article>`).join('');
 }
-renderFilters();renderGrid();
+renderFilters();renderTiers();renderGrid();
 
 /* ---------- load products from the published Google Sheet CSV ---------- */
 function parseCSV(text){
@@ -715,7 +816,8 @@ async function loadProducts(){
     const col=n=>{for(const x of n){const i=head.indexOf(x);if(i>=0)return i;}return -1;};
     const ci={name:col(['name','product','title']),cat:col(['category','cat']),price:col(['price','mrp']),
       desc:col(['description','desc']),feats:col(['features','feats']),img:col(['image','img','image url','photo']),
-      badge:col(['badge','tag','label']),icon:col(['icon','emoji']),rank:col(['rank','order']),active:col(['active','show'])};
+      badge:col(['badge','tag','label']),icon:col(['icon','emoji']),rank:col(['rank','order']),active:col(['active','show']),
+      moq:col(['moq','minimum order quantity','min order qty']),tier:col(['tier','gifting tier'])};
     const get=(r,i)=>i>=0&&r[i]!=null?String(r[i]).trim():'';
     const out=[];
     for(let r=1;r<rows.length;r++){
@@ -726,7 +828,9 @@ async function loadProducts(){
         price:priceRaw?Number(priceRaw):null,desc:get(row,ci.desc),
         feats:get(row,ci.feats).split(/[|;]/).map(s=>s.trim()).filter(Boolean),
         img:get(row,ci.img)||null,badge:get(row,ci.badge)||null,icon:get(row,ci.icon)||'',
-        rank:get(row,ci.rank)?Number(get(row,ci.rank)):null});
+        rank:get(row,ci.rank)?Number(get(row,ci.rank)):null,
+        moq:get(row,ci.moq)?(parseInt(get(row,ci.moq).replace(/[^\d]/g,''),10)||null):null,
+        tier:get(row,ci.tier)||null});
     }
     if(!out.length) return;
     // collapse exact duplicate rows (same name + price + image) from the sheet
@@ -738,12 +842,16 @@ async function loadProducts(){
     const cats=[...new Set(PRODUCTS.map(p=>p.cat))];
     CATEGORIES.length=0;CATEGORIES.push('All',...cats);
     if(!['All','★ Featured',...cats].includes(state.filter))state.filter='All';
-    renderFilters();renderGrid();
+    renderFilters();renderTiers();renderGrid();
   }catch(e){console.warn('Products CSV load failed — using placeholders.',e);}
 }
 loadProducts();
 
 $('#filters').addEventListener('click',e=>{const c=e.target.closest('[data-cat]');if(!c)return;state.filter=c.dataset.cat;renderFilters();renderGrid();});
+$('#tierGrid').addEventListener('click',e=>{const b=e.target.closest('[data-tier]');if(!b)return;
+  state.tier=(state.tier===b.dataset.tier?null:b.dataset.tier);state.filter='All';
+  renderTiers();renderFilters();renderGrid();
+  $('#filters').scrollIntoView({behavior:'smooth',block:'start'});});
 $('#grid').addEventListener('click',e=>{const add=e.target.closest('[data-add]');const open=e.target.closest('[data-open]');if(add)addToCart(add.dataset.add);else if(open)openModal(open.dataset.open);});
 
 /* ---------- cart ---------- */
@@ -789,7 +897,7 @@ let modalProduct=null;
 function openModal(id){const p=PRODUCTS.find(x=>x.id===id);if(!p)return;modalProduct=p;
   $('#modalMedia').innerHTML=media(p);$('#modalCat').textContent=p.cat;$('#modalName').textContent=p.name;
   $('#modalDesc').textContent=p.desc;$('#modalFeats').innerHTML=(p.feats||[]).map(f=>`<li>${f}</li>`).join('');
-  $('#modalPrice').textContent=priceLabel(p);
+  $('#modalPrice').innerHTML=priceLabel(p)+(p.moq?` <span class="moq-inline">· MOQ ${p.moq}+ units</span>`:'');
   $('#modalAdd').textContent=state.cart[id]?'✓ In your box — add another':'Add to your box +';
   $('#modal').classList.add('open');}
 $('#modalAdd').addEventListener('click',()=>{if(modalProduct){addToCart(modalProduct.id);$('#modalAdd').textContent='✓ In your box — add another';}});
