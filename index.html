@@ -499,8 +499,8 @@ a{color:inherit}
    ============================================================ */
 const CONFIG = {
   endpoint:"https://diwali-leads.cs-ai.workers.dev",                 // Cloudflare Worker that records leads to the Sheet
-  productsCsvUrl:"https://diwali-leads.cs-ai.workers.dev/products",  // Worker product feed (used first if it returns rows)
-  sheetCsvUrl:"https://docs.google.com/spreadsheets/d/178CnR_Vwru88_moOrEQc4tOqVwmtqEqbqar27pNM0XQ/export?format=csv&gid=0", // LIVE Google Sheet CSV — auto-updates the catalogue; fallback when the Worker feed is empty
+  productsCsvUrl:"",                                                // (disabled) Worker product feed — leave blank to read the Sheet directly
+  sheetCsvUrl:"https://docs.google.com/spreadsheets/d/178CnR_Vwru88_moOrEQc4tOqVwmtqEqbqar27pNM0XQ/export?format=csv&gid=0", // LIVE Google Sheet CSV — the catalogue reads this directly and auto-updates on reload
   currency:"₹"
 };
 
