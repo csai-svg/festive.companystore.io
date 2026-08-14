@@ -399,6 +399,79 @@ a{color:inherit}
 .gen-empty{text-align:center;padding:44px 20px;color:var(--slate)}
 .gen-empty b{color:var(--onyx);display:block;font-size:1rem;margin-bottom:4px}
 
+
+/* ===== redesigned tier explainer (first design, brand palette) ===== */
+.tn-grid{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:22px}
+.tn-cell{cursor:pointer;padding:16px 16px 18px;border-right:1px solid var(--line);transition:background .18s}
+.tn-cell:hover{background:rgba(231,184,76,.14)}
+.tn-cell.on{background:var(--onyx)}
+.tn-cell.on .tn-name,.tn-cell.on .tn-desc{color:#fff}
+.tn-cell.on .tn-band{color:var(--gold-bright)}
+.tn-cell.on .tn-bars i{background:var(--gold-bright)}
+.tn-bars{display:flex;align-items:flex-end;gap:4px;height:30px;margin-bottom:12px}
+.tn-bars i{flex:1;border-radius:2px;background:var(--gold)}
+.tn-bars i.f{opacity:.22}
+.tn-band{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:800;font-size:.74rem;letter-spacing:.02em;color:var(--red);margin-bottom:9px}
+.tn-name{margin-bottom:5px}
+
+
+/* ===== round 3: search / tier price / kit edit / celebration ===== */
+.allbar .fld.grow{flex:1 1 220px;min-width:180px}
+.allbar .fld.grow input{width:100%}
+.tn-band{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:800;font-size:.74rem;letter-spacing:.02em;color:var(--red);margin:2px 0 8px}
+.tn-cell.on{background:rgba(229,29,35,.05);box-shadow:inset 0 0 0 2px var(--red)}
+.tn-cell.on .tn-name{color:var(--onyx)}
+.tn-cell.on .tn-desc{color:var(--slate)}
+.tn-cell.on .tn-band{color:var(--red)}
+.ki{position:relative;display:flex;flex-direction:column}
+.ki .kt{cursor:pointer}
+.ki-act{display:flex;gap:6px;padding:0 9px 9px;margin-top:auto}
+.ki-rep,.ki-rem{border:1px solid var(--line);background:#fff;border-radius:7px;padding:5px 6px;font-size:.68rem;font-weight:800;cursor:pointer;color:var(--onyx);line-height:1}
+.ki-rep{flex:1}
+.ki-rep:hover{background:var(--cream);border-color:var(--gold)}
+.ki-rem{width:30px}
+.ki-rem:hover{background:#FBEAEA;border-color:var(--red);color:var(--red)}
+.gst-note{max-width:1240px;text-align:center;font-size:.78rem;color:var(--slate);margin:16px auto 0}
+#thanksSummary{margin:0 auto 22px;max-width:360px;text-align:left}
+.os{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:16px 16px 14px}
+.os-h{font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--gold-bright);margin-bottom:10px}
+.os-row{display:flex;justify-content:space-between;gap:12px;font-size:.85rem;padding:4px 0;color:rgba(255,255,255,.92)}
+.os-tot{border-top:1px solid rgba(255,255,255,.22);margin-top:6px;padding-top:8px;font-weight:800}
+.os-sub{color:var(--gold-bright);font-weight:700}
+.os-ref{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.72rem;color:rgba(255,255,255,.6);margin-top:12px}
+.os-gst{font-size:.72rem;color:rgba(255,255,255,.55);margin-top:4px}
+.celebrate{position:fixed;inset:0;pointer-events:none;z-index:120;overflow:hidden}
+.celebrate i{position:absolute;top:-14px;width:9px;height:14px;border-radius:2px;opacity:0;will-change:transform,opacity;animation-name:conffall;animation-timing-function:cubic-bezier(.3,.6,.4,1);animation-fill-mode:forwards}
+@keyframes conffall{0%{opacity:0;transform:translateY(-10px) rotate(0)}12%{opacity:1}100%{opacity:0;transform:translateY(102vh) translateX(calc(var(--dx,0)*90px)) rotate(560deg)}}
+@media(prefers-reduced-motion:reduce){.celebrate i{display:none}}
+
+
+/* ===== replace-item picker ===== */
+.swap{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:20px}
+.swap.open{display:flex}
+.swap-back{position:absolute;inset:0;background:rgba(43,41,42,.6);backdrop-filter:blur(3px)}
+.swap-card{position:relative;background:#fff;border-radius:20px;width:min(720px,100%);max-height:86vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden;animation:pop .26s cubic-bezier(.34,1.4,.5,1)}
+.swap-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px 20px;border-bottom:1px solid var(--line);background:var(--cream)}
+.swap-title{font-weight:800;font-size:1.02rem;color:var(--onyx)}
+.swap-sub{font-size:.8rem;color:var(--slate);margin-top:3px}
+.swap-close{background:rgba(43,41,42,.08);border:none;width:34px;height:34px;border-radius:50%;font-size:1.2rem;color:var(--onyx);flex:none}
+.swap-close:hover{background:rgba(43,41,42,.16)}
+.swap-list{overflow-y:auto;padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.swap-item{display:flex;align-items:center;gap:10px;text-align:left;border:1px solid var(--line);border-radius:12px;background:#fff;padding:8px;cursor:pointer;transition:border-color .15s,box-shadow .15s;position:relative}
+.swap-item:hover{border-color:var(--red);box-shadow:0 0 0 3px rgba(229,29,35,.08)}
+.si-thumb{width:52px;height:52px;border-radius:8px;overflow:hidden;flex:none;background:var(--surface-3,#f1ece3);display:flex;align-items:center;justify-content:center}
+.si-thumb img{width:100%;height:100%;object-fit:cover}
+.si-b{min-width:0;flex:1}
+.si-n{font-size:.8rem;font-weight:700;line-height:1.2;color:var(--onyx);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.si-m{font-size:.68rem;color:var(--slate);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.si-p{font-size:.85rem;font-weight:800;color:var(--onyx);margin-top:3px}
+.si-pick{position:absolute;top:8px;right:8px;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--red);opacity:0;transition:opacity .15s}
+.swap-item:hover .si-pick{opacity:1}
+.swap-empty{grid-column:1/-1;text-align:center;color:var(--slate);padding:34px 12px;font-size:.9rem}
+.swap-foot{padding:14px 20px;border-top:1px solid var(--line);text-align:center}
+.swap-more{background:var(--onyx);color:#fff;border:none;border-radius:40px;padding:11px 22px;font-weight:800;font-size:.85rem;cursor:pointer}
+.swap-more:hover{background:var(--red)}
+
 </style>
 </head>
 <body>
@@ -496,32 +569,37 @@ a{color:inherit}
 
   <div class="tier-note">
     <span class="tn-eyebrow"><span class="tn-dot"></span>Pick a gifting tier</span>
-    <h4>Priced to match the moment.</h4>
-    <p class="tn-sub">Browse everything under <b>All</b>, or pick a tier to build a custom gift kit within that per-person budget. Each tier is a curation level, from everyday-useful crowd-pleasers to flagship hero gifts. Per-head price bands are indicative; your curator sets the final bands.</p>
+    <h4>Curated by budget.</h4>
+    <p class="tn-sub">Browse everything under <b>Build Your Box</b>, or pick a tier to build a custom gift kit within that per-person budget. Bands rise from everyday-useful crowd-pleasers to flagship hero gifts. Tap one to start.</p>
     <div class="tn-grid">
-      <div class="tn-cell">
+      <div class="tn-cell" data-tier="Signature" onclick="pickTier('Signature')">
         <span class="tn-ico"><svg viewBox="0 0 40 34"><rect x="1" y="23" width="6" height="9" fill="#E51D23"/><rect x="9" y="18" width="6" height="14" fill="#E51D23" fill-opacity=".16"/><rect x="17" y="13" width="6" height="19" fill="#E51D23" fill-opacity=".16"/><rect x="25" y="8" width="6" height="24" fill="#E51D23" fill-opacity=".16"/><rect x="33" y="3" width="6" height="29" fill="#E51D23" fill-opacity=".16"/></svg></span>
         <div class="tn-name">Signature</div>
+        <div class="tn-band">₹500 – ₹1,000</div>
         <div class="tn-desc">Everyday-useful, crowd-pleasing picks; the dependable core of any Diwali box.</div>
       </div>
-      <div class="tn-cell">
+      <div class="tn-cell" data-tier="Elite" onclick="pickTier('Elite')">
         <span class="tn-ico"><svg viewBox="0 0 40 34"><rect x="1" y="23" width="6" height="9" fill="#E51D23"/><rect x="9" y="18" width="6" height="14" fill="#E51D23"/><rect x="17" y="13" width="6" height="19" fill="#E51D23" fill-opacity=".16"/><rect x="25" y="8" width="6" height="24" fill="#E51D23" fill-opacity=".16"/><rect x="33" y="3" width="6" height="29" fill="#E51D23" fill-opacity=".16"/></svg></span>
         <div class="tn-name">Elite</div>
+        <div class="tn-band">₹1,000 – ₹1,500</div>
         <div class="tn-desc">A considered step up with higher perceived value.</div>
       </div>
-      <div class="tn-cell">
+      <div class="tn-cell" data-tier="Prestige" onclick="pickTier('Prestige')">
         <span class="tn-ico"><svg viewBox="0 0 40 34"><rect x="1" y="23" width="6" height="9" fill="#E51D23"/><rect x="9" y="18" width="6" height="14" fill="#E51D23"/><rect x="17" y="13" width="6" height="19" fill="#E51D23"/><rect x="25" y="8" width="6" height="24" fill="#E51D23" fill-opacity=".16"/><rect x="33" y="3" width="6" height="29" fill="#E51D23" fill-opacity=".16"/></svg></span>
         <div class="tn-name">Prestige</div>
+        <div class="tn-band">₹1,500 – ₹2,000</div>
         <div class="tn-desc">Premium brands &amp; gadgets that make a strong impression.</div>
       </div>
-      <div class="tn-cell">
+      <div class="tn-cell" data-tier="Supreme" onclick="pickTier('Supreme')">
         <span class="tn-ico"><svg viewBox="0 0 40 34"><rect x="1" y="23" width="6" height="9" fill="#E51D23"/><rect x="9" y="18" width="6" height="14" fill="#E51D23"/><rect x="17" y="13" width="6" height="19" fill="#E51D23"/><rect x="25" y="8" width="6" height="24" fill="#E51D23"/><rect x="33" y="3" width="6" height="29" fill="#E51D23" fill-opacity=".16"/></svg></span>
         <div class="tn-name">Supreme</div>
+        <div class="tn-band">₹2,000 – ₹2,500</div>
         <div class="tn-desc">Standout, indulgent gifts for special recognition.</div>
       </div>
-      <div class="tn-cell">
+      <div class="tn-cell" data-tier="Pinnacle" onclick="pickTier('Pinnacle')">
         <span class="tn-ico"><svg viewBox="0 0 40 34"><rect x="1" y="23" width="6" height="9" fill="#E51D23"/><rect x="9" y="18" width="6" height="14" fill="#E51D23"/><rect x="17" y="13" width="6" height="19" fill="#E51D23"/><rect x="25" y="8" width="6" height="24" fill="#E51D23"/><rect x="33" y="3" width="6" height="29" fill="#E51D23"/></svg></span>
         <div class="tn-name">Pinnacle</div>
+        <div class="tn-band">Above ₹2,500</div>
         <div class="tn-desc">Flagship hero pieces for clients &amp; leadership.</div>
       </div>
     </div>
@@ -572,6 +650,16 @@ a{color:inherit}
   </div>
 </div>
 
+<!-- Replace-item picker -->
+<div class="swap" id="swapModal">
+  <div class="swap-back" data-close-swap></div>
+  <div class="swap-card">
+    <div class="swap-head"><div><div class="swap-title" id="swapTitle">Replace item</div><div class="swap-sub" id="swapSub"></div></div><button class="swap-close" data-close-swap aria-label="Close">×</button></div>
+    <div class="swap-list" id="swapList"></div>
+    <div class="swap-foot"><button class="swap-more" id="swapMore">Find more from the full catalogue →</button></div>
+  </div>
+</div>
+
 <!-- Toast -->
 <div class="toast" id="toast"><span class="dot"></span><span id="toastMsg">Added to your box</span></div>
 
@@ -580,7 +668,8 @@ a{color:inherit}
   <div class="thanks-card">
     <img class="plush" data-plush src="" alt="" />
     <h2>Request received! 🪔</h2>
-    <p id="thanksMsg">Thanks — our gifting team will reach out shortly with your Diwali quote.</p>
+    <p id="thanksMsg">Thanks! Our gifting team will reach out shortly with your Diwali quote.</p>
+    <div id="thanksSummary"></div>
     <button class="btn-primary" id="thanksBack">Back to catalog</button>
   </div>
 </div>
@@ -747,7 +836,7 @@ function priceLabel(p){return p.price==null?"On request":CONFIG.currency+p.price
 /* ============================================================
    STATE + LEAD → SHEET
    ============================================================ */
-const state={lead:null,sessionId:"cs-"+Date.now().toString(36)+Math.random().toString(36).slice(2,7),filter:"All",cart:{}};
+const state={lead:null,sessionId:"cs-"+Date.now().toString(36)+Math.random().toString(36).slice(2,7),filter:"All",cart:{},swap:null};
 function submitLead(type,extra={}){
   const payload=Object.assign({type,sessionId:state.sessionId,timestamp:new Date().toISOString(),
     name:state.lead?.name||"",email:state.lead?.email||"",phone:state.lead?.phone||"",org:state.lead?.org||""},extra);
@@ -903,7 +992,7 @@ const TIERS=["Signature","Elite","Prestige","Supreme","Pinnacle"];   // catalogu
 function productTier(p){return p.tier?String(p.tier):null;}
 function renderFilters(){
   const chips=['All',...TIERS];
-  $('#filters').innerHTML=chips.map(c=>`<button class="chip ${c===state.filter?'active':''}" data-cat="${c}">${c}</button>`).join('');
+  $('#filters').innerHTML=chips.map(c=>`<button class="chip ${c===state.filter?'active':''}" data-cat="${c}">${c==='All'?'Build Your Box':c}</button>`).join('');
 }
 function renderGrid(){
   let list=PRODUCTS.slice();
@@ -911,6 +1000,9 @@ function renderGrid(){
     const mn=parseFloat($('#allMin')&&$('#allMin').value)||0;
     const mx=parseFloat($('#allMax')&&$('#allMax').value)||Infinity;
     const cf=($('#allCat')&&$('#allCat').value)||'';
+    const q=(($('#allSearch')&&$('#allSearch').value)||'').trim().toLowerCase();
+    const qw=q.split(/\s+/).filter(Boolean);
+    if(qw.length)list=list.filter(p=>{const hay=((p.name||'')+' '+(p.brand||'')+' '+(p.cat||'')+' '+(p.desc||'')).toLowerCase();return hay.includes(q)||qw.every(w=>hay.includes(w));});
     list=list.filter(p=>((p.price==null?0:p.price)>=mn)&&((p.price==null?Infinity:p.price)<=mx)&&(!cf||p.cat===cf));
     if(so==='pl')list.sort((a,b)=>(a.price||0)-(b.price||0));
     else if(so==='ph')list.sort((a,b)=>(b.price||0)-(a.price||0));
@@ -987,17 +1079,21 @@ function renderView(){
   renderFilters();
   if(state.filter==='All'){ renderAllControls(); renderGrid(); }
   else { renderGenerator(state.filter); }
+  syncTierNote();
 }
+function syncTierNote(){document.querySelectorAll('.tn-cell[data-tier]').forEach(c=>c.classList.toggle('on',c.getAttribute('data-tier')===state.filter));}
+function pickTier(k){state.filter=k;renderView();var f=document.querySelector('.filters');if(f&&f.scrollIntoView)f.scrollIntoView({behavior:'smooth',block:'start'});}
 function gridRefresh(){ if(state.filter==='All'){renderGrid();} else if(state.gen&&state.gen.kits){renderKitResults();} }
 
 function renderAllControls(){
   const cats=[...new Set(PRODUCTS.map(p=>p.cat).filter(Boolean))].sort();
   $('#catControls').innerHTML=
    '<div class="allbar">'+
+     '<div class="fld grow"><label>Search</label><input id="allSearch" type="search" placeholder="diyas, sweet box, dry fruit…" oninput="renderGrid()"></div>'+
      '<div class="fld"><label>Sort</label><select id="allSort" onchange="renderGrid()">'+
        '<option value="featured">Featured</option>'+
-       '<option value="pl">Price — low to high</option>'+
-       '<option value="ph">Price — high to low</option>'+
+       '<option value="pl">Price: low to high</option>'+
+       '<option value="ph">Price: high to low</option>'+
        '<option value="top">Top rated</option>'+
        '<option value="az">Name A–Z</option></select></div>'+
      '<div class="fld range"><label>Price</label><input id="allMin" type="number" min="0" placeholder="Min" oninput="renderGrid()"><span>–</span><input id="allMax" type="number" min="0" placeholder="Max" oninput="renderGrid()"></div>'+
@@ -1006,7 +1102,7 @@ function renderAllControls(){
      '<button class="rst" onclick="resetAll()">Reset</button>'+
    '</div><div class="allcount" id="allCount"></div>';
 }
-function resetAll(){['allMin','allMax'].forEach(id=>{const e=$('#'+id);if(e)e.value='';});const s=$('#allSort');if(s)s.value='featured';const c=$('#allCat');if(c)c.value='';renderGrid();}
+function resetAll(){var _s=$('#allSearch');if(_s)_s.value='';['allMin','allMax'].forEach(id=>{const e=$('#'+id);if(e)e.value='';});const s=$('#allSort');if(s)s.value='featured';const c=$('#allCat');if(c)c.value='';renderGrid();}
 
 function renderGenerator(key){
   const t=bandOf(key);
@@ -1018,7 +1114,7 @@ function renderGenerator(key){
    '<div class="gen">'+
      '<span class="eyebrow-g">'+key+' · '+t.label+' / person</span>'+
      '<h3>Build a custom gift kit</h3>'+
-     '<p class="g-sub">Tell us your team size and per-person budget. We pack in the most items that fit, one per category for variety — any product within budget can appear, whatever its tier.</p>'+
+     '<p class="g-sub">Tell us your team size and per-person budget. We pack in the most items that fit, one per category for variety. Any product within budget can appear, whatever its tier.</p>'+
      '<div class="g-how">'+
        '<div class="s"><b><i>1</i> Team size</b><p>Only products whose minimum order fits your headcount (a 25-unit minimum applies).</p></div>'+
        '<div class="s"><b><i>2</i> Budget / person</b><p>Your budget picks the tier. Each kit stays within it; we show the full total too.</p></div>'+
@@ -1030,7 +1126,7 @@ function renderGenerator(key){
        '<div class="fld"><label>Tier</label><div class="band" id="genBand">'+key+' · '+t.label+'</div></div>'+
        '<button class="g-gen" onclick="generateKits()">✦ Generate kits</button>'+
      '</div>'+
-     '<div class="g-cats"><b>In '+key+' you can gift:</b> '+(cats.join(' · ')||'—')+'</div>'+
+     '<div class="g-cats"><b>In '+key+' you can gift:</b> '+(cats.join(' · ')||'\u2014')+'</div>'+
    '</div>';
   const grid=$('#grid');grid.style.display='block';
   grid.innerHTML='<div class="gen-empty"><b>Ready when you are</b>Enter your team size and budget, then hit Generate.</div>';
@@ -1060,7 +1156,7 @@ function loadMoreKits(){
   const pool=eligibleKit(g.budget,g.cutoff);
   const seen=new Set(g.kits.map(k=>k.items.map(p=>p.name).sort().join('|')));
   const fresh=makeKits(pool,g.budget,10,allow).filter(k=>!seen.has(k.items.map(p=>p.name).sort().join('|')));
-  if(!fresh.length){toast(allow?'No more new combinations':'No more — try a different budget');return;}
+  if(!fresh.length){toast(allow?'No more new combinations':'No more, try a different budget');return;}
   g.kits=g.kits.concat(fresh.slice(0,4)).sort((a,b)=>b.items.length-a.items.length||b.total-a.total);
   if(allow)toast('Mixing in repeat categories for more variety');
   renderKitResults();
@@ -1070,11 +1166,11 @@ function renderKitResults(){
   const moqNote=g.emp<MOQ_FLOOR?(' A 25-unit minimum applies, so you\'ll order 25 (gift '+g.emp+', keep '+(25-g.emp)+' spare).'):'';
   grid.innerHTML='<div class="g-note">Kits for <b>'+g.emp+'</b> employees at <b>'+genMoney(g.budget)+'/person</b> · tier <b>'+g.tier+'</b>.'+moqNote+'</div>'+
     '<div class="kits">'+g.kits.map((k,i)=>kitCard(k,i)).join('')+'</div>'+
-    '<button class="loadmore" onclick="loadMoreKits()">↻ Load more kits</button>';
+    '<button class="loadmore" onclick="loadMoreKits()">↻ Load more kits</button>'+'<p class="gst-note">Prices are exclusive of GST, shipping and branding charges.</p>';
 }
 function kitCard(k,i){
   const hero=i===0, per=k.total, tot=per*state.gen.emp;
-  const items=k.items.map(p=>'<div class="ki"><div class="kt">'+media(p)+'</div><div class="kb2"><div class="kn">'+p.name+'</div><div class="kp">'+genMoney(p.price)+'</div></div></div>').join('');
+  const items=k.items.map((p,j)=>'<div class="ki"><div class="kt" data-open="'+p.id+'">'+media(p)+'</div><div class="kb2"><div class="kn">'+p.name+'</div><div class="kp">'+genMoney(p.price)+'</div></div><div class="ki-act"><button class="ki-rep" onclick="replaceKitItem(event,'+i+','+j+')" title="Swap for another">\u21c4 Replace</button><button class="ki-rem" onclick="removeKitItem(event,'+i+','+j+')" title="Remove">\u00d7</button></div></div>').join('');
   return '<div class="kit'+(hero?' hero':'')+'">'+
     '<div class="kit-h"><span class="kt">Kit '+(i+1)+'</span>'+(hero?'<span class="kb">Best value · most items</span>':'')+
       '<div class="ks"><span class="st"><b>'+k.items.length+'</b> items</span><span class="st hl"><b>'+genMoney(per)+'</b>/person</span><span class="st"><b>'+genMoney(tot)+'</b> total · '+state.gen.emp+' pax</span></div></div>'+
@@ -1088,6 +1184,29 @@ function addKitToBox(i){
   updateCartUI();
   const fab=$('#cartFab');if(fab){fab.classList.remove('pulse');void fab.offsetWidth;fab.classList.add('pulse');}
   toast('Kit '+(i+1)+' added — '+k.items.length+' items at '+g.cutoff+'/unit');
+}
+function replaceKitItem(e,i,j){ if(e){e.stopPropagation();} if(!state.gen)return; state.swap={i:i,j:j,all:false}; renderSwap(); document.getElementById('swapModal').classList.add('open'); }
+function swapCandidates(){
+  const s=state.swap,g=state.gen,k=g.kits[s.i],cur=k.items[s.j];
+  const usedIds=new Set(k.items.map(p=>p.id));
+  const left=g.budget-(k.total-cur.price);
+  let pool=eligibleKit(g.budget,g.cutoff).filter(p=>!usedIds.has(p.id)&&p.price<=left);
+  if(!s.all)pool=pool.filter(p=>Math.abs(p.price-cur.price)<=100);
+  return pool.sort((a,b)=>a.price-b.price);
+}
+function renderSwap(){
+  const s=state.swap,g=state.gen,cur=g.kits[s.i].items[s.j],pool=swapCandidates();
+  document.getElementById('swapTitle').textContent='Replace: '+cur.name;
+  document.getElementById('swapSub').innerHTML=(s.all?'Full catalogue that fits your budget':'Within ±₹100 of '+genMoney(cur.price))+' · '+pool.length+' option'+(pool.length!==1?'s':'')+' · stays within '+genMoney(g.budget)+'/person';
+  const list=document.getElementById('swapList');
+  list.innerHTML=pool.length?pool.map(p=>'<button class="swap-item" onclick="doSwap(\''+p.id+'\')"><div class="si-thumb">'+media(p)+'</div><div class="si-b"><div class="si-n">'+p.name+'</div><div class="si-m">'+p.cat+(p.brand?' · '+p.brand:'')+'</div><div class="si-p">'+genMoney(p.price)+'</div></div><span class="si-pick">Choose</span></button>').join(''):'<div class="swap-empty">No options in this price range. Try “Find more” below.</div>';
+  document.getElementById('swapMore').style.display=s.all?'none':'';
+}
+function swapFindMore(){ state.swap.all=true; renderSwap(); }
+function doSwap(id){ const s=state.swap,g=state.gen,k=g.kits[s.i],np=PRODUCTS.find(x=>x.id===id); if(!np)return; k.items[s.j]=np; k.total=k.items.reduce((a,x)=>a+x.price,0); document.getElementById('swapModal').classList.remove('open'); renderKitResults(); toast('Swapped in '+np.name.split(' ').slice(0,3).join(' ')); }
+function removeKitItem(e,i,j){ if(e){e.stopPropagation();} const g=state.gen; if(!g)return; const k=g.kits[i];
+  if(k.items.length<=1){toast('A kit needs at least one item');return;}
+  k.items.splice(j,1); k.total=k.items.reduce((s,p)=>s+p.price,0); renderKitResults();
 }
 
 renderView();
@@ -1188,10 +1307,31 @@ $('#requestBtn').addEventListener('click',()=>{
   const btn=$('#requestBtn');btn.disabled=true;btn.textContent='Sending…';
   const itemsStr=lines.map(l=>`${l.name} (${l.cat}) x${l.qty}${l.price!=null?' @'+CONFIG.currency+l.price:''}`).join('; ');
   submitLead('hot',{items:itemsStr,itemsJson:JSON.stringify(lines),itemCount:cartCount(),total:cartTotal()}).finally(()=>{
-    $('#cartPanel').classList.remove('open');$('#thanks').classList.add('open');
+    $('#cartPanel').classList.remove('open');buildOrderSummary(lines);$('#thanks').classList.add('open');celebrate();
     btn.disabled=false;btn.textContent='Request this box →';
   });
 });
+function buildOrderSummary(lines){
+  const el=document.getElementById('thanksSummary'); if(!el)return;
+  const total=cartTotal(),count=cartCount(),emp=(state.gen&&state.gen.emp)||null;
+  const rows=lines.map(l=>'<div class="os-row"><span>'+l.name+' \u00d7 '+l.qty+'</span><span>'+(l.price==null?'On request':CONFIG.currency+(l.price*l.qty).toLocaleString('en-IN'))+'</span></div>').join('');
+  el.innerHTML='<div class="os"><div class="os-h">Your box</div>'+rows+
+    '<div class="os-row os-tot"><span>Total \u00b7 '+count+' units</span><span>'+CONFIG.currency+total.toLocaleString('en-IN')+'</span></div>'+
+    (emp?'<div class="os-row os-sub"><span>For '+emp+' employees</span><span>'+CONFIG.currency+Math.round(total/emp).toLocaleString('en-IN')+'/person</span></div>':'')+
+    '<div class="os-ref">Ref '+state.sessionId.toUpperCase()+'</div>'+
+    '<div class="os-gst">Exclusive of GST, shipping &amp; branding charges.</div></div>';
+}
+function celebrate(){
+  const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  const host=document.createElement('div');host.className='celebrate';
+  if(!reduce){const cols=['#F7D774','#E7B84C','#E51D23','#fff3cf'];
+    for(let i=0;i<70;i++){const s=document.createElement('i');
+      s.style.left=(Math.random()*100)+'%';s.style.background=cols[i%cols.length];
+      s.style.setProperty('--dx',(Math.random()*2-1).toFixed(2));
+      s.style.animationDelay=(Math.random()*0.25).toFixed(2)+'s';
+      s.style.animationDuration=(1.4+Math.random()*0.8).toFixed(2)+'s';host.appendChild(s);}}
+  document.body.appendChild(host);setTimeout(()=>{host.remove();},2600);
+}
 $('#thanksBack').addEventListener('click',()=>{$('#thanks').classList.remove('open');state.cart={};updateCartUI();gridRefresh();});
 
 /* ---------- modal ---------- */
@@ -1205,7 +1345,9 @@ function openModal(id){const p=PRODUCTS.find(x=>x.id===id);if(!p)return;modalPro
   $('#modal').classList.add('open');}
 $('#modalAdd').addEventListener('click',()=>{if(modalProduct){addToCart(modalProduct.id);$('#modalAdd').textContent=modalAddLabel(modalProduct);}});
 document.querySelectorAll('[data-close-modal]').forEach(el=>el.addEventListener('click',()=>$('#modal').classList.remove('open')));
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#modal').classList.remove('open');$('#cartPanel').classList.remove('open');}});
+document.querySelectorAll('[data-close-swap]').forEach(el=>el.addEventListener('click',()=>document.getElementById('swapModal').classList.remove('open')));
+document.getElementById('swapMore').addEventListener('click',swapFindMore);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#modal').classList.remove('open');$('#cartPanel').classList.remove('open');document.getElementById('swapModal').classList.remove('open');}});
 
 /* ---------- toast ---------- */
 let toastT=null;
