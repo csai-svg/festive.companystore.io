@@ -472,6 +472,15 @@ a{color:inherit}
 .swap-more{background:var(--onyx);color:#fff;border:none;border-radius:40px;padding:11px 22px;font-weight:800;font-size:.85rem;cursor:pointer}
 .swap-more:hover{background:var(--red)}
 
+
+/* ===== round 4: add-product tile, MOQ badges ===== */
+.ki-add{border:1.5px dashed var(--line);border-radius:10px;background:var(--surface-2,#faf8f4);color:var(--red);font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;min-height:112px;font-size:1.5rem;line-height:1}
+.ki-add span{font-size:.72rem;font-weight:800}
+.ki-add:hover{border-color:var(--red);background:#FCEBEC}
+.ki-moq{display:inline-block;margin-left:6px;font-size:.58rem;font-weight:800;color:var(--red);background:#FCEBEC;padding:1px 6px;border-radius:20px;vertical-align:middle}
+.fn.over{color:var(--red);font-weight:800}
+.moq-bump{display:block;width:100%;margin-top:5px;color:var(--maroon);font-weight:600}
+
 </style>
 </head>
 <body>
@@ -629,6 +638,7 @@ a{color:inherit}
       <div class="cart-total"><span class="t-lbl">Estimated total</span><span class="t-val" id="cartTotal">₹0</span></div>
       <button class="btn-primary" id="requestBtn">Request this box →</button>
       <p class="fineprint">Sends your selection to our team for a formal quote.</p>
+      <p class="fineprint">Exclusive of GST, shipping &amp; branding charges.</p>
     </div>
   </aside>
 </div>
@@ -1168,42 +1178,53 @@ function renderKitResults(){
     '<div class="kits">'+g.kits.map((k,i)=>kitCard(k,i)).join('')+'</div>'+
     '<button class="loadmore" onclick="loadMoreKits()">↻ Load more kits</button>'+'<p class="gst-note">Prices are exclusive of GST, shipping and branding charges.</p>';
 }
+function kitQty(k){ return Math.max(state.gen.cutoff, ...k.items.map(p=>p.moq||1)); }
 function kitCard(k,i){
-  const hero=i===0, per=k.total, tot=per*state.gen.emp;
-  const items=k.items.map((p,j)=>'<div class="ki"><div class="kt" data-open="'+p.id+'">'+media(p)+'</div><div class="kb2"><div class="kn">'+p.name+'</div><div class="kp">'+genMoney(p.price)+'</div></div><div class="ki-act"><button class="ki-rep" onclick="replaceKitItem(event,'+i+','+j+')" title="Swap for another">\u21c4 Replace</button><button class="ki-rem" onclick="removeKitItem(event,'+i+','+j+')" title="Remove">\u00d7</button></div></div>').join('');
+  const g=state.gen, hero=i===0, per=k.total, qty=kitQty(k), tot=per*qty, maxMoq=Math.max(...k.items.map(p=>p.moq||1)), over=per>g.budget;
+  const items=k.items.map((p,j)=>'<div class="ki"><div class="kt" data-open="'+p.id+'">'+media(p)+'</div><div class="kb2"><div class="kn">'+p.name+'</div><div class="kp">'+genMoney(p.price)+(p.moq>g.cutoff?'<span class="ki-moq">MOQ '+p.moq+'</span>':'')+'</div></div><div class="ki-act"><button class="ki-rep" onclick="replaceKitItem(event,'+i+','+j+')" title="Swap for another">⇄ Replace</button><button class="ki-rem" onclick="removeKitItem(event,'+i+','+j+')" title="Remove">×</button></div></div>').join('');
+  const moqNote=qty>g.emp?'<span class="fn moq-bump">Ordered at '+qty+'/unit to meet a '+maxMoq+'-unit minimum · '+(qty-g.emp)+' spare each</span>':'';
   return '<div class="kit'+(hero?' hero':'')+'">'+
     '<div class="kit-h"><span class="kt">Kit '+(i+1)+'</span>'+(hero?'<span class="kb">Best value · most items</span>':'')+
-      '<div class="ks"><span class="st"><b>'+k.items.length+'</b> items</span><span class="st hl"><b>'+genMoney(per)+'</b>/person</span><span class="st"><b>'+genMoney(tot)+'</b> total · '+state.gen.emp+' pax</span></div></div>'+
-    '<div class="kit-i">'+items+'</div>'+
-    '<div class="kit-f"><button class="addkit" onclick="addKitToBox('+i+')">Add this kit to box</button><span class="fn">Uses '+genMoney(per)+' of '+genMoney(state.gen.budget)+' ('+Math.round(per/state.gen.budget*100)+'%)</span></div>'+
+      '<div class="ks"><span class="st"><b>'+k.items.length+'</b> items</span><span class="st hl"><b>'+genMoney(per)+'</b>/person</span><span class="st"><b>'+genMoney(tot)+'</b> total · '+qty+'/unit</span></div></div>'+
+    '<div class="kit-i">'+items+'<button class="ki-add" onclick="addKitProduct(event,'+i+')" title="Add a product">+<span>Add product</span></button></div>'+
+    '<div class="kit-f"><button class="addkit" onclick="addKitToBox('+i+')">Add this kit to box</button><span class="fn'+(over?' over':'')+'">Uses '+genMoney(per)+' of '+genMoney(g.budget)+' ('+Math.round(per/g.budget*100)+'%)</span>'+moqNote+'</div>'+
   '</div>';
 }
 function addKitToBox(i){
-  const g=state.gen,k=g.kits[i];
-  k.items.forEach(p=>{const cur=state.cart[p.id]||0;state.cart[p.id]=Math.max(cur,g.cutoff);});
+  const g=state.gen,k=g.kits[i],qty=kitQty(k);
+  k.items.forEach(p=>{const cur=state.cart[p.id]||0;state.cart[p.id]=Math.max(cur,qty);});
   updateCartUI();
   const fab=$('#cartFab');if(fab){fab.classList.remove('pulse');void fab.offsetWidth;fab.classList.add('pulse');}
-  toast('Kit '+(i+1)+' added — '+k.items.length+' items at '+g.cutoff+'/unit');
+  toast('Kit '+(i+1)+' added · '+k.items.length+' items at '+qty+'/unit');
 }
+function addKitProduct(e,i){ if(e){e.stopPropagation();} if(!state.gen)return; state.swap={i:i,j:null,all:true,mode:'add'}; renderSwap(); document.getElementById('swapModal').classList.add('open'); }
 function replaceKitItem(e,i,j){ if(e){e.stopPropagation();} if(!state.gen)return; state.swap={i:i,j:j,all:false}; renderSwap(); document.getElementById('swapModal').classList.add('open'); }
 function swapCandidates(){
-  const s=state.swap,g=state.gen,k=g.kits[s.i],cur=k.items[s.j];
+  const s=state.swap,g=state.gen,k=g.kits[s.i];
   const usedIds=new Set(k.items.map(p=>p.id));
+  if(s.mode==='add'){ return PRODUCTS.filter(p=>!usedIds.has(p.id)&&p.price!=null).sort((a,b)=>(a.price||0)-(b.price||0)); }
+  const cur=k.items[s.j];
   const left=g.budget-(k.total-cur.price);
   let pool=eligibleKit(g.budget,g.cutoff).filter(p=>!usedIds.has(p.id)&&p.price<=left);
   if(!s.all)pool=pool.filter(p=>Math.abs(p.price-cur.price)<=100);
   return pool.sort((a,b)=>a.price-b.price);
 }
 function renderSwap(){
-  const s=state.swap,g=state.gen,cur=g.kits[s.i].items[s.j],pool=swapCandidates();
-  document.getElementById('swapTitle').textContent='Replace: '+cur.name;
-  document.getElementById('swapSub').innerHTML=(s.all?'Full catalogue that fits your budget':'Within ±₹100 of '+genMoney(cur.price))+' · '+pool.length+' option'+(pool.length!==1?'s':'')+' · stays within '+genMoney(g.budget)+'/person';
+  const s=state.swap,g=state.gen,pool=swapCandidates(),add=s.mode==='add';
+  if(add){
+    document.getElementById('swapTitle').textContent='Add a product to Kit '+(s.i+1);
+    document.getElementById('swapSub').innerHTML='Full catalogue · '+pool.length+' products · adding a higher-MOQ item sets the whole kit to that quantity';
+  }else{
+    const cur=g.kits[s.i].items[s.j];
+    document.getElementById('swapTitle').textContent='Replace: '+cur.name;
+    document.getElementById('swapSub').innerHTML=(s.all?'Full catalogue that fits your budget':'Within ±₹100 of '+genMoney(cur.price))+' · '+pool.length+' option'+(pool.length!==1?'s':'')+' · stays within '+genMoney(g.budget)+'/person';
+  }
   const list=document.getElementById('swapList');
-  list.innerHTML=pool.length?pool.map(p=>'<button class="swap-item" onclick="doSwap(\''+p.id+'\')"><div class="si-thumb">'+media(p)+'</div><div class="si-b"><div class="si-n">'+p.name+'</div><div class="si-m">'+p.cat+(p.brand?' · '+p.brand:'')+'</div><div class="si-p">'+genMoney(p.price)+'</div></div><span class="si-pick">Choose</span></button>').join(''):'<div class="swap-empty">No options in this price range. Try “Find more” below.</div>';
-  document.getElementById('swapMore').style.display=s.all?'none':'';
+  list.innerHTML=pool.length?pool.map(p=>'<button class="swap-item" onclick="doSwap(\''+p.id+'\')"><div class="si-thumb">'+media(p)+'</div><div class="si-b"><div class="si-n">'+p.name+'</div><div class="si-m">'+p.cat+(p.brand?' · '+p.brand:'')+(p.moq?' · MOQ '+p.moq:'')+'</div><div class="si-p">'+genMoney(p.price)+'</div></div><span class="si-pick">'+(add?'Add':'Choose')+'</span></button>').join(''):'<div class="swap-empty">No options'+(add?'':' in this price range. Try “Find more” below')+'.</div>';
+  document.getElementById('swapMore').style.display=(add||s.all)?'none':'';
 }
 function swapFindMore(){ state.swap.all=true; renderSwap(); }
-function doSwap(id){ const s=state.swap,g=state.gen,k=g.kits[s.i],np=PRODUCTS.find(x=>x.id===id); if(!np)return; k.items[s.j]=np; k.total=k.items.reduce((a,x)=>a+x.price,0); document.getElementById('swapModal').classList.remove('open'); renderKitResults(); toast('Swapped in '+np.name.split(' ').slice(0,3).join(' ')); }
+function doSwap(id){ const s=state.swap,g=state.gen,k=g.kits[s.i],np=PRODUCTS.find(x=>x.id===id); if(!np)return; if(s.mode==='add'){ k.items.push(np); toast('Added '+np.name.split(' ').slice(0,3).join(' ')); } else { k.items[s.j]=np; toast('Swapped in '+np.name.split(' ').slice(0,3).join(' ')); } k.total=k.items.reduce((a,x)=>a+x.price,0); document.getElementById('swapModal').classList.remove('open'); renderKitResults(); }
 function removeKitItem(e,i,j){ if(e){e.stopPropagation();} const g=state.gen; if(!g)return; const k=g.kits[i];
   if(k.items.length<=1){toast('A kit needs at least one item');return;}
   k.items.splice(j,1); k.total=k.items.reduce((s,p)=>s+p.price,0); renderKitResults();
@@ -1306,7 +1327,7 @@ $('#requestBtn').addEventListener('click',()=>{
   const lines=cartLines();if(!lines.length)return;
   const btn=$('#requestBtn');btn.disabled=true;btn.textContent='Sending…';
   const itemsStr=lines.map(l=>`${l.name} (${l.cat}) x${l.qty}${l.price!=null?' @'+CONFIG.currency+l.price:''}`).join('; ');
-  submitLead('hot',{items:itemsStr,itemsJson:JSON.stringify(lines),itemCount:cartCount(),total:cartTotal()}).finally(()=>{
+  submitLead('hot',{items:itemsStr,itemsJson:JSON.stringify(lines),itemCount:cartCount(),total:cartTotal(),headcount:(state.gen&&state.gen.emp)||''}).finally(()=>{
     $('#cartPanel').classList.remove('open');buildOrderSummary(lines);$('#thanks').classList.add('open');celebrate();
     btn.disabled=false;btn.textContent='Request this box →';
   });
