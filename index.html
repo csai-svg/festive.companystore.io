@@ -1152,10 +1152,10 @@ function renderCustomNav(){
   }).join('');
   let ex;
   if(state.ctab==='custom'){
-    ex='<div class="cx-ex"><div class="cx-eyebrow">Build a custom kit</div><h3>Tell us your team &amp; budget</h3><p>Enter your team size and per-person budget — we pack in the most items that fit, then you can swap, add or remove before adding it to your box.</p></div>';
+    ex='<div class="cx-ex"><div class="cx-eyebrow">Build a custom kit</div><h3>Tell us your team &amp; budget</h3><p>Enter your team size and per-person budget - we pack in the most items that fit, then you can swap, add or remove before adding it to your box.</p></div>';
   }else{
     const bnd=bandOf(state.ctab);
-    ex='<div class="cx-ex"><div class="cx-eyebrow" style="color:'+tierColor(state.ctab)+'">'+state.ctab+' tier</div><h3>'+bnd.label+' <span class="cx-per">per person</span></h3><p>Ready-made '+state.ctab+' kits, fullest value first. Add one and tell us your team size — or hit “Generate more” for fresh combinations.</p></div>';
+    ex='<div class="cx-ex"><div class="cx-eyebrow" style="color:'+tierColor(state.ctab)+'">'+state.ctab+' tier</div><h3>'+bnd.label+' <span class="cx-per">per person</span></h3><p>Ready-made '+state.ctab+' kits, fullest value first. Add one and tell us your team size or hit “Generate more” for fresh combinations.</p></div>';
   }
   $('#catControls').innerHTML='<div class="cxnav">'+nav+'</div>'+ex;
 }
