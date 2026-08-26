@@ -1168,7 +1168,7 @@ function renderGrid(){
   const b=state.byb;let list=PRODUCTS.slice();
   const q=(b.q||'').trim().toLowerCase(),qw=q.split(/\s+/).filter(Boolean);
   list=list.filter(p=>((p.price==null?0:p.price)>=b.min)&&((p.price==null?Infinity:p.price)<=b.max)&&(!b.cat||p.cat===b.cat));
-  if(qw.length)list=list.filter(p=>{const hay=((p.name||'')+' '+(p.brand||'')+' '+(p.cat||'')+' '+(p.desc||'')).toLowerCase();return hay.includes(q)||qw.every(w=>hay.includes(w));});
+  if(qw.length)list=list.filter(p=>{const hay=((p.name||'')+' '+(p.brand||'')+' '+(p.cat||'')+' '+(p.desc||'')+' '+(p.longDesc||'')).toLowerCase();return hay.includes(q)||qw.every(w=>hay.includes(w));});
   if(b.sort==='pl')list.sort((x,y)=>(x.price||0)-(y.price||0));
   else if(b.sort==='ph')list.sort((x,y)=>(y.price||0)-(x.price||0));
   else if(b.sort==='top')list.sort((x,y)=>((y.badge?1:0)-(x.badge?1:0))||((x.price||0)-(y.price||0)));
@@ -1395,7 +1395,7 @@ async function parseFeed(url){
   const TORDER={Signature:0,Elite:1,Prestige:2,Supreme:3,Pinnacle:4};
   out.forEach(p=>{const feats=[];if(p._mat&&!/^na$/i.test(p._mat))feats.push('Material: '+p._mat);
     if(p._sizes.length)feats.push('Sizes: '+p._sizes.join(', '));
-    if(p.moq)feats.push('MOQ '+p.moq+' units');p.feats=feats;p.desc=(p._desc&&p._desc.trim())?p._desc.replace(/\s+/g,' ').trim():makeDesc(p.cat,p._mat);delete p._sizes;delete p._mat;delete p._desc;});
+    if(p.moq)feats.push('MOQ '+p.moq+' units');p.feats=feats;p.desc=makeDesc(p.cat,p._mat);p.longDesc=(p._desc&&p._desc.trim())?p._desc.replace(/\s+/g,' ').trim():p.desc;delete p._sizes;delete p._mat;delete p._desc;});
   out.sort((a,b)=>{const oa=(a.order==null?Infinity:a.order),ob=(b.order==null?Infinity:b.order);if(oa!==ob)return oa-ob;const t=(a.badge?0:1)-(b.badge?0:1);if(t)return t;const ti=(TORDER[a.tier]??9)-(TORDER[b.tier]??9);if(ti)return ti;return (a.price||0)-(b.price||0);});
   return out;
 }
@@ -1491,7 +1491,7 @@ let modalProduct=null;
 function modalAddLabel(p){return inBox(p.id)?'✓ In your box, tap to remove':'Add to box +';}
 function openModal(id){const p=PRODUCTS.find(x=>x.id===id);if(!p)return;modalProduct=p;
   $('#modalMedia').innerHTML=media(p);$('#modalCat').textContent=p.cat;$('#modalName').textContent=p.name;
-  $('#modalDesc').textContent=p.desc;$('#modalFeats').innerHTML=(p.feats||[]).map(f=>`<li>${f}</li>`).join('');
+  $('#modalDesc').textContent=p.longDesc||p.desc;$('#modalFeats').innerHTML=(p.feats||[]).map(f=>`<li>${f}</li>`).join('');
   $('#modalPrice').innerHTML=priceLabel(p)+(p.moq?` <span class="moq-inline">· MOQ ${p.moq}+ units</span>`:'');
   $('#modalAdd').textContent=modalAddLabel(p);
   $('#modal').classList.add('open');}
