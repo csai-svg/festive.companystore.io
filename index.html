@@ -1185,7 +1185,7 @@ function bybCard(p,i){
   return '<article class="card" style="animation-delay:'+Math.min(i*30,300)+'ms">'+
     '<div class="thumb" data-open="'+p.id+'">'+media(p)+'<span class="cat-tag">'+p.cat+'</span>'+(p.badge?'<span class="badge-pill">'+(p.icon||'⭐')+' '+p.badge+'</span>':'')+'<span class="more">View more +</span></div>'+
     '<div class="card-body">'+
-      '<div class="card-name">'+p.name+'</div>'+(p.brand?'<div class="card-brand">by '+p.brand+'</div>':'')+
+      '<div class="card-name">'+p.name+'</div>'+
       '<div class="card-desc">'+p.desc+'</div>'+(p.moq?'<div class="card-moq">MOQ '+p.moq+'+ units</div>':'')+
       '<div class="card-foot"><div class="price">'+(p.price==null?'<small>On request</small>':CONFIG.currency+p.price.toLocaleString('en-IN'))+'</div></div>'+
       '<div class="add-wrap">'+btn+'</div>'+
@@ -1309,7 +1309,7 @@ function renderSwap(){
   if(add){document.getElementById('swapTitle').textContent='Add a product';document.getElementById('swapSub').innerHTML='Full catalogue · '+pool.length+' products · a higher-MOQ item sets the whole kit to that quantity';}
   else{const cur=state.viewKits[s.i].items[s.j];document.getElementById('swapTitle').textContent='Replace: '+cur.name;document.getElementById('swapSub').innerHTML=(s.all?'Full catalogue that fits the band':'Within ±₹100 of '+genMoney(cur.price))+' · '+pool.length+' option'+(pool.length!==1?'s':'');}
   const list=document.getElementById('swapList');
-  list.innerHTML=pool.length?pool.map(function(p){return '<button class="swap-item" onclick="doSwap(\''+p.id+'\')"><div class="si-thumb">'+media(p)+'</div><div class="si-b"><div class="si-n">'+p.name+'</div><div class="si-m">'+p.cat+(p.brand?' · '+p.brand:'')+(p.moq?' · MOQ '+p.moq:'')+'</div><div class="si-p">'+genMoney(p.price)+'</div></div><span class="si-pick">'+(add?'Add':'Choose')+'</span></button>';}).join(''):'<div class="swap-empty">No options'+(add?'':' in this price range. Try “Find more” below')+'.</div>';
+  list.innerHTML=pool.length?pool.map(function(p){return '<button class="swap-item" onclick="doSwap(\''+p.id+'\')"><div class="si-thumb">'+media(p)+'</div><div class="si-b"><div class="si-n">'+p.name+'</div><div class="si-m">'+p.cat+(p.moq?' · MOQ '+p.moq:'')+'</div><div class="si-p">'+genMoney(p.price)+'</div></div><span class="si-pick">'+(add?'Add':'Choose')+'</span></button>';}).join(''):'<div class="swap-empty">No options'+(add?'':' in this price range. Try “Find more” below')+'.</div>';
   document.getElementById('swapMore').style.display=(add||s.all)?'none':'';
 }
 function swapFindMore(){state.swap.all=true;renderSwap();}
@@ -1367,6 +1367,7 @@ async function parseFeed(url){
   const head=rows[0].map(h=>h.trim().toLowerCase());
   const find=(...alts)=>{for(const a of alts){const i=head.findIndex(h=>h.includes(a));if(i>=0)return i;}return -1;};
   const ci={name:find('product name','name'),cat:find('category'),tier:find('budget tier','tier'),
+    order:find('order of item','order of items','item order'),desc:find('description'),
     brand:find('brand'),vendor:find('vendor'),price:find('suggested selling price inr','selling price inr','price inr','price'),
     img:find('product image','image'),moq:find('minimum order','moq'),material:find('material'),
     size:find('size'),rank:find('product rank','rank'),tag:find('product tag'),badge:find('badge'),avail:find('availability','active','status')};
@@ -1383,7 +1384,8 @@ async function parseFeed(url){
     const brand=g(row,ci.brand)||g(row,ci.vendor)||name.split(' ')[0];
     const mat=g(row,ci.material);const rankTxt=g(row,ci.rank);const tagTxt=g(row,ci.tag);const badgeTxt=g(row,ci.badge);
     const moq=parseInt(g(row,ci.moq).replace(/[^0-9]/g,''),10)||null;
-    const p={id:'p'+r,name,cat,tier:g(row,ci.tier)||null,brand,price,
+    const ordN=parseInt(g(row,ci.order).replace(/[^0-9-]/g,''),10);
+    const p={id:'p'+r,name,cat,tier:g(row,ci.tier)||null,brand,price,order:(isFinite(ordN)?ordN:null),_desc:g(row,ci.desc),
       img:img?(/^https?:/.test(img)?img:'https://drive.google.com/thumbnail?id='+img+'&sz=w600'):null,
       moq,_sizes:(size&&!/^na$/i.test(size))?[size]:[],_mat:mat};
     if(badgeTxt){p.badge=badgeTxt;p.icon='⭐';}else if(/top\s*rated/i.test(rankTxt)||/top\s*rated/i.test(tagTxt)){p.badge='Top Rated';p.icon='⭐';}
@@ -1392,9 +1394,9 @@ async function parseFeed(url){
   const out=[...bucket.values()];
   const TORDER={Signature:0,Elite:1,Prestige:2,Supreme:3,Pinnacle:4};
   out.forEach(p=>{const feats=[];if(p._mat&&!/^na$/i.test(p._mat))feats.push('Material: '+p._mat);
-    if(p._sizes.length)feats.push('Sizes: '+p._sizes.join(', '));feats.push('By '+p.brand);
-    if(p.moq)feats.push('MOQ '+p.moq+' units');p.feats=feats;p.desc=makeDesc(p.cat,p._mat);delete p._sizes;delete p._mat;});
-  out.sort((a,b)=>{const t=(a.badge?0:1)-(b.badge?0:1);if(t)return t;const ti=(TORDER[a.tier]??9)-(TORDER[b.tier]??9);if(ti)return ti;return (a.price||0)-(b.price||0);});
+    if(p._sizes.length)feats.push('Sizes: '+p._sizes.join(', '));
+    if(p.moq)feats.push('MOQ '+p.moq+' units');p.feats=feats;p.desc=(p._desc&&p._desc.trim())?p._desc.replace(/\s+/g,' ').trim():makeDesc(p.cat,p._mat);delete p._sizes;delete p._mat;delete p._desc;});
+  out.sort((a,b)=>{const oa=(a.order==null?Infinity:a.order),ob=(b.order==null?Infinity:b.order);if(oa!==ob)return oa-ob;const t=(a.badge?0:1)-(b.badge?0:1);if(t)return t;const ti=(TORDER[a.tier]??9)-(TORDER[b.tier]??9);if(ti)return ti;return (a.price||0)-(b.price||0);});
   return out;
 }
 async function loadProducts(){
@@ -1488,7 +1490,7 @@ $('#thanksBack').addEventListener('click',()=>{$('#thanks').classList.remove('op
 let modalProduct=null;
 function modalAddLabel(p){return inBox(p.id)?'✓ In your box, tap to remove':'Add to box +';}
 function openModal(id){const p=PRODUCTS.find(x=>x.id===id);if(!p)return;modalProduct=p;
-  $('#modalMedia').innerHTML=media(p);$('#modalCat').textContent=p.cat+(p.brand?' · '+p.brand:'');$('#modalName').textContent=p.name;
+  $('#modalMedia').innerHTML=media(p);$('#modalCat').textContent=p.cat;$('#modalName').textContent=p.name;
   $('#modalDesc').textContent=p.desc;$('#modalFeats').innerHTML=(p.feats||[]).map(f=>`<li>${f}</li>`).join('');
   $('#modalPrice').innerHTML=priceLabel(p)+(p.moq?` <span class="moq-inline">· MOQ ${p.moq}+ units</span>`:'');
   $('#modalAdd').textContent=modalAddLabel(p);
