@@ -1056,7 +1056,7 @@ body.mode-holiday .catalog-hero{background:linear-gradient(90deg,rgba(60,6,10,.9
    Leave blank for PREVIEW mode (leads print to the console).
    ============================================================ */
 const CONFIG = {
-  endpoint:"",                 // PREVIEW: lead webhook intentionally disabled (production uses the Cloudflare Worker). Leads print to the console only.
+  endpoint:"https://diwali-leads.cs-ai.workers.dev",                 // Cloudflare Worker that records leads to the Sheet
   productsCsvUrl:"",                                                // (disabled) Worker product feed, leave blank to read the Sheet directly
   sheetCsvUrl:"",   // Holiday page: Diwali sheet not loaded; // LIVE Google Sheet CSV, the catalogue reads this directly and auto-updates on reload
   currency:"₹"
