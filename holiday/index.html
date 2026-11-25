@@ -509,8 +509,8 @@ a{color:inherit}
 .si-b{min-width:0;flex:1}
 .si-n{font-size:.8rem;font-weight:700;line-height:1.2;color:var(--onyx);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .si-m{font-size:.68rem;color:var(--slate);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.si-p{font-size:.85rem;font-weight:800;color:var(--onyx);margin-top:3px}
-.si-pick{position:absolute;top:8px;right:8px;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--red);opacity:0;transition:opacity .15s}
+.si-p{font-size:.85rem;font-weight:800;color:var(--onyx);margin-top:3px;display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.si-pick{flex:none;font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--red);opacity:0;transition:opacity .15s}
 .swap-item:hover .si-pick{opacity:1}
 .swap-empty{grid-column:1/-1;text-align:center;color:var(--slate);padding:34px 12px;font-size:.9rem}
 .swap-foot{padding:14px 20px;border-top:1px solid var(--line);text-align:center}
@@ -1599,7 +1599,7 @@ function renderSwap(){
   if(add){document.getElementById('swapTitle').textContent='Add a product';document.getElementById('swapSub').innerHTML='Full catalogue · '+pool.length+' products · a higher-MOQ item sets the whole kit to that quantity';}
   else{const cur=state.viewKits[s.i].items[s.j];document.getElementById('swapTitle').textContent='Replace: '+cur.name;document.getElementById('swapSub').innerHTML=(s.all?'Full catalogue that fits the band':'Within ±₹100 of '+genMoney(cur.price))+' · '+pool.length+' option'+(pool.length!==1?'s':'');}
   const list=document.getElementById('swapList');
-  list.innerHTML=pool.length?pool.map(function(p){return '<button class="swap-item" onclick="doSwap(\''+p.id+'\')"><div class="si-thumb">'+media(p)+'</div><div class="si-b"><div class="si-n">'+p.name+'</div><div class="si-m">'+p.cat+(p.moq?' · MOQ '+p.moq:'')+'</div><div class="si-p">'+genMoney(p.price)+'</div></div><span class="si-pick">'+(add?'Add':'Choose')+'</span></button>';}).join(''):'<div class="swap-empty">No options'+(add?'':' in this price range. Try “Find more” below')+'.</div>';
+  list.innerHTML=pool.length?pool.map(function(p){return '<button class="swap-item" onclick="doSwap(\''+p.id+'\')"><div class="si-thumb">'+media(p)+'</div><div class="si-b"><div class="si-n">'+p.name+'</div><div class="si-m">'+p.cat+(p.moq?' · MOQ '+p.moq:'')+'</div><div class="si-p"><span>'+genMoney(p.price)+'</span><span class="si-pick">'+(add?'Add':'Choose')+'</span></div></div></button>';}).join(''):'<div class="swap-empty">No options'+(add?'':' in this price range. Try “Find more” below')+'.</div>';
   document.getElementById('swapMore').style.display=(add||s.all)?'none':'';
 }
 function swapFindMore(){state.swap.all=true;renderSwap();}
