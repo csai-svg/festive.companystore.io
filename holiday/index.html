@@ -261,15 +261,18 @@ a{color:inherit}
 .modal{position:fixed;inset:0;z-index:55;display:none;align-items:center;justify-content:center;padding:20px}
 .modal.open{display:flex}
 .modal-back{position:absolute;inset:0;background:rgba(43,41,42,.62);backdrop-filter:blur(3px)}
-.modal-card{position:relative;background:#fff;border-radius:22px;width:min(880px,100%);max-height:90vh;overflow:hidden;box-shadow:var(--shadow-lg);display:grid;grid-template-columns:1fr 1fr;animation:pop .28s cubic-bezier(.34,1.4,.5,1)}
+.modal-card{position:relative;background:#fff;border-radius:22px;width:min(880px,100%);max-height:90vh;overflow:hidden;box-shadow:var(--shadow-lg);display:grid;grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr);animation:pop .28s cubic-bezier(.34,1.4,.5,1)}
 @keyframes pop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
 .modal-media{position:relative;min-height:340px;display:flex;align-items:center;justify-content:center;background:var(--cream)}
 .modal-media img{width:100%;height:100%;object-fit:contain}
 .modal-media>img{align-self:flex-start;height:auto;aspect-ratio:1/1;background:#fff}
-.modal-info{padding:36px 34px;overflow-y:auto;display:flex;flex-direction:column}
+.modal-info{padding:36px 34px;overflow-y:auto;display:flex;flex-direction:column;min-height:0;max-height:90vh}
 .modal-info .cat{color:var(--red);font-weight:800;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
 .modal-info h2{font-size:1.7rem;font-weight:800;line-height:1.1;margin-bottom:12px}
 .modal-info .mdesc{color:#5a5652;line-height:1.6;font-size:.96rem;margin-bottom:18px}
+.modal-info .mdesc .mdesc-line{display:block;font-weight:700;color:var(--onyx);margin-bottom:6px}
+.modal-info .mdesc .mdesc-list{margin:0 0 4px;padding-left:18px}
+.modal-info .mdesc .mdesc-list li{margin:3px 0;list-style:disc}
 .modal-info .feats{list-style:none;margin-bottom:22px}
 .modal-info .feats li{padding:7px 0 7px 26px;position:relative;font-size:.9rem}
 .modal-info .feats li::before{content:"";position:absolute;left:0;top:11px;width:14px;height:14px;background:var(--gold);border-radius:50%;box-shadow:0 0 0 4px rgba(231,184,76,.2)}
@@ -297,7 +300,7 @@ a{color:inherit}
   .media-side{min-height:40vh}
   .form-scroll{padding:64px 28px 120px}
   .modal-card{display:block;max-height:88vh;overflow-y:auto}
-  .modal-info{overflow:visible}
+  .modal-info{overflow:visible;max-height:none}
   .modal-media{min-height:0}
   .modal-media>img{width:min(100%,46vh)}
   .modal-close{position:sticky;top:12px;margin:12px 12px -50px auto}
@@ -1005,7 +1008,7 @@ body.mode-holiday .catalog-hero{background:linear-gradient(90deg,rgba(60,6,10,.9
     <div class="modal-info">
       <div class="cat" id="modalCat"></div>
       <h2 id="modalName"></h2>
-      <p class="mdesc" id="modalDesc"></p>
+      <div class="mdesc" id="modalDesc"></div>
       <ul class="feats" id="modalFeats"></ul>
       <div class="mprice" id="modalPrice"></div>
       <button class="btn-primary" id="modalAdd">Add to your box +</button>
@@ -1056,7 +1059,7 @@ body.mode-holiday .catalog-hero{background:linear-gradient(90deg,rgba(60,6,10,.9
    Leave blank for PREVIEW mode (leads print to the console).
    ============================================================ */
 const CONFIG = {
-  endpoint:"https://diwali-leads.cs-ai.workers.dev",                 // Cloudflare Worker that records leads to the Sheet
+  endpoint:"https://diwali-leads.cs-ai.workers.dev",   // Lead API (Cloudflare Worker). Holiday leads carry catalog:"holiday" → Holiday tabs + Holiday Chat space.
   productsCsvUrl:"",                                                // (disabled) Worker product feed, leave blank to read the Sheet directly
   sheetCsvUrl:"",   // Holiday page: Diwali sheet not loaded; // LIVE Google Sheet CSV, the catalogue reads this directly and auto-updates on reload
   currency:"₹"
@@ -1219,7 +1222,7 @@ function hasPod(items){return items.some(function(p){return p&&p.price==null;});
    ============================================================ */
 const state={mode:'diwali',boxes:{diwali:[],holiday:[]},lead:null,sessionId:"cs-"+Date.now().toString(36)+Math.random().toString(36).slice(2,7),tab:'byb',ctab:'Signature',groups:[],swap:null,gen:null,pregen:null,pregenShown:null,viewKits:null,viewCtx:null,pendingKit:null,byb:{sort:'pl',min:0,max:Infinity,cat:'',q:''}};
 function submitLead(type,extra={}){
-  const payload=Object.assign({type,sessionId:state.sessionId,timestamp:new Date().toISOString(),
+  const payload=Object.assign({type,catalog:"holiday",sessionId:state.sessionId,timestamp:new Date().toISOString(),
     name:state.lead?.name||"",email:state.lead?.email||"",phone:state.lead?.phone||"",org:state.lead?.org||""},extra);
   if(!CONFIG.endpoint){console.log("%c[PREVIEW] "+type.toUpperCase()+" LEAD","color:#E51D23;font-weight:bold",payload);return Promise.resolve();}
   return fetch(CONFIG.endpoint,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}).catch(e=>console.warn("Lead send failed",e));
@@ -1958,7 +1961,12 @@ $('#thanksBack').addEventListener('click',()=>{$('#thanks').classList.remove('op
 let modalProduct=null;
 function mgSwap(i){var imgs=state.modalImgs||[];var u=imgs[i];if(!u)return;var m=document.getElementById('mgMain');if(m)m.innerHTML='<img src="'+u+'" alt="" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=FALLBACK_IMG">';document.querySelectorAll('.mg-t').forEach(function(b,x){b.classList.toggle('on',x===i);});}
 function shortenDesc(s){s=String(s||'').trim();if(s.length<=200)return s;var out=s.slice(0,180);var sp=out.lastIndexOf(' ');if(sp>120)out=out.slice(0,sp);return out.replace(/[\s.,;:!?-]+$/,'');}
-function setModalDesc(full){var el=$('#modalDesc');full=String(full||'').trim();var short=shortenDesc(full);if(short.length>=full.length){el.textContent=full;return;}state.descFull=full;state.descShort=short;el.innerHTML='<span id="mdText"></span> <button class="seemore" id="mdMore" onclick="toggleDesc()">See more</button>';document.getElementById('mdText').textContent=short+'\u2026 ';}
+function escHtml(t){return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+/* Descriptions written as lines in the sheet ("Brand: X" + "- bullet" lines) are shown exactly as written, in full */
+function descHtml(t){var html='',list=[];function flush(){if(list.length){html+='<ul class="mdesc-list">'+list.map(function(x){return '<li>'+escHtml(x)+'</li>';}).join('')+'</ul>';list=[];}}
+  t.split('\n').forEach(function(l){l=l.trim();if(!l)return;var m=l.match(/^[-•–*]\s*(.*)$/);if(m){if(m[1])list.push(m[1]);}else{flush();html+='<span class="mdesc-line">'+escHtml(l)+'</span>';}});flush();return html;}
+function setModalDesc(full){var el=$('#modalDesc');full=String(full||'').trim();
+  if(full.indexOf('\n')>=0){el.innerHTML=descHtml(full);return;}var short=shortenDesc(full);if(short.length>=full.length){el.textContent=full;return;}state.descFull=full;state.descShort=short;el.innerHTML='<span id="mdText"></span> <button class="seemore" id="mdMore" onclick="toggleDesc()">See more</button>';document.getElementById('mdText').textContent=short+'\u2026 ';}
 function toggleDesc(){var tx=document.getElementById('mdText'),b=document.getElementById('mdMore');if(!tx||!b)return;if(b.textContent==='See more'){tx.textContent=state.descFull+' ';b.textContent='See less';}else{tx.textContent=state.descShort+'\u2026 ';b.textContent='See more';}}
 function modalAddLabel(p){return inBox(p.id)?'✓ In your box, tap to remove':'Add to box +';}
 function openModal(id){const p=PRODUCTS.find(x=>x.id===id);if(!p)return;modalProduct=p;
