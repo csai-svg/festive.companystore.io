@@ -21,6 +21,8 @@
 <style>
 :root{
   --red:#E51D23;
+  --red-soft:linear-gradient(180deg,#D4262C 0%,#A3121A 100%);
+  --red-soft-edge:#A3121A;
   --red-deep:#8E0F17;
   --red-dark:#5C0910;
   --maroon:#4A0A10;
@@ -180,10 +182,7 @@ a{color:inherit}
 .card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .price{font-weight:800;font-size:1.1rem;color:var(--onyx)}
 .price small{font-weight:700;font-size:.72rem;color:var(--slate)}
-.add{background:var(--onyx);color:#fff;font-weight:800;font-size:.8rem;padding:10px 15px;border-radius:40px;transition:background .15s,transform .1s;white-space:nowrap}
-.add:hover{background:var(--red)}
-.add:active{transform:scale(.95)}
-.add.added{background:var(--gold-deep)}
+/* .add: see 'Add to box' outline pill block at end of stylesheet */
 .empty{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--slate)}
 .empty h3{color:var(--onyx);margin-bottom:8px}
 
@@ -231,8 +230,7 @@ a{color:inherit}
 .cart-foot .fineprint{text-align:center;font-size:.72rem;color:var(--slate);margin-top:10px}
 
 /* Goodies scene in the catalogue header (holiday mode, after login) */
-.gbody .gkit{width:100%;margin-top:8px;background:#fff;color:var(--red-deep);border:1.5px solid var(--red-deep);border-radius:30px;padding:10px 12px;font-weight:800;font-size:.82rem;cursor:pointer}
-.gbody .gkit:hover{background:var(--red-deep);color:#fff}
+.gbody .gkit{margin-top:8px}
 .gbody .gview{display:block;margin:8px auto 0;background:none;border:none;color:var(--slate);font-size:.78rem;font-weight:700;text-decoration:underline;cursor:pointer}
 #catalog.scene-mode .catalog-hero{display:none}
 #catalog.scene-mode .goodies{padding:0}
@@ -254,13 +252,13 @@ a{color:inherit}
   #catalog.scene-mode .gdesc{display:none}
   #catalog.scene-mode .gbody{padding:10px 14px 12px}
   #catalog.scene-mode .gprice{margin:2px 0 8px}
-  #catalog.scene-mode .gbody .add,#catalog.scene-mode .gbody .gkit{padding-top:8px;padding-bottom:8px}
+  #catalog.scene-mode .gbody .add,#catalog.scene-mode .gbody .gkit{height:36px}
 }
 @media(max-width:560px){
   #catalog.scene-mode .scene-title{position:static;max-width:none;padding:18px 18px 14px;background:linear-gradient(135deg,var(--red-deep,#8E0F17),#5c070d)}
   #catalog.scene-mode .gslide::before{display:none}
 }
-/* Price on Demand: products awaiting a vendor sourcing price */
+/* Price on Request: products awaiting a vendor sourcing price */
 .pod{display:inline-flex;align-items:center;gap:5px;font-size:.74rem;font-weight:800;letter-spacing:.02em;color:var(--red-deep);background:#FFF4DA;border:1px solid var(--gold);padding:4px 10px;border-radius:30px;white-space:nowrap;line-height:1.2}
 .pod::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold)}
 .modal-info .mprice .pod{font-size:.95rem;padding:6px 14px}
@@ -444,8 +442,6 @@ a{color:inherit}
 .ki .kn{font-size:.72rem;font-weight:700;line-height:1.25;height:2.5em;overflow:hidden}
 .ki .kp{font-size:.78rem;font-weight:800;margin-top:4px}
 .kit-f{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:13px 18px;border-top:1px solid var(--line)}
-.kit-f .addkit{background:var(--onyx);color:#fff;border:none;border-radius:40px;padding:10px 18px;font-weight:800;font-size:.82rem}
-.kit-f .addkit:hover{background:var(--red)}
 .kit-f .fn{font-size:.76rem;color:var(--slate)}
 .loadmore{display:block;margin:18px auto 0;background:linear-gradient(135deg,var(--gold-bright),var(--gold));color:var(--maroon);border:none;border-radius:40px;padding:12px 26px;font-weight:800}
 .loadmore:hover{filter:brightness(1.04)}
@@ -541,9 +537,6 @@ a{color:inherit}
 @media(max-width:560px){.grid{grid-template-columns:1fr!important}}
 #catControls{position:sticky;top:132px;z-index:29;background:var(--white)}
 .add-wrap{margin-top:12px}
-.card .add{width:100%;border:none;border-radius:40px;padding:12px;font-weight:800;font-size:.9rem;color:#fff;cursor:pointer;transition:filter .15s,background .15s}
-.card .add:hover{filter:brightness(1.06)}
-.card .add.added{background:var(--red)!important}
 .cxnav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
 .ctab{border:1.5px solid var(--line);background:var(--cream);color:var(--onyx);padding:9px 16px;border-radius:40px;font-weight:700;font-size:.88rem;cursor:pointer;transition:.15s}
 .ctab:hover{border-color:var(--gold)}
@@ -611,7 +604,6 @@ a{color:inherit}
   .allbar.open .collapse{display:flex}
   .allbar .fld.range{flex-direction:row;align-items:center}
   .allbar .rst{align-self:flex-start}
-  .card .add{padding:10px;font-size:.8rem}
   .card-name{font-size:.86rem}
   .card-brand{font-size:.72rem}
 }
@@ -790,7 +782,6 @@ a{color:inherit}
 .gname{font-weight:800;font-size:1rem;margin-bottom:4px}
 .gdesc{color:var(--slate);font-size:.8rem;line-height:1.4;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .gprice{font-weight:800;font-size:1.1rem;margin:4px 0 10px}
-.gbody .add{width:100%;background:#E7B84C;color:#2B292A}
 .gnav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.9);color:var(--onyx);
   font-size:1.6rem;font-weight:700;line-height:1;box-shadow:0 8px 20px rgba(0,0,0,.2);z-index:3}
 .gnav.prev{left:14px}.gnav.next{right:14px}
@@ -810,7 +801,7 @@ a{color:inherit}
   .gname{font-size:.92rem;line-height:1.25}
   .gdesc{font-size:.74rem;margin-bottom:4px}
   .gprice{font-size:1rem;margin:2px 0 8px}
-  .gbody .add{margin-top:auto;padding:9px 10px;font-size:.8rem}
+  .gbody .add{margin-top:auto}
   .gcard .cat-tag{display:none}
   .gdots{bottom:16px}
   .gdots button{background:#e2d4d4}.gdots button.on{background:var(--red)}
@@ -839,6 +830,8 @@ a{color:inherit}
 /* ==================== HOLIDAY 2026 · catalogue per Figma "Homepage" / "Theme Page" ==================== */
 body.mode-holiday .catalog-hero{background:linear-gradient(90deg,rgba(60,6,10,.92) 0%,rgba(80,10,16,.72) 45%,rgba(80,10,16,.15) 100%),url('assets/holiday/banner-2.jpg') center/cover no-repeat}
 .catalog-hero h1 .glow{color:var(--gold-bright)}
+.switchcat .sc-short{display:none}
+@media(max-width:420px){.switchcat .sc-full{display:none}.switchcat .sc-short{display:inline}}
 .switchcat{font-size:.78rem;font-weight:700;color:var(--red);margin-left:6px;text-decoration:underline;text-underline-offset:3px}
 .themes-count{color:var(--slate);font-size:.88rem;margin:0 0 14px}
 .themes{display:grid;grid-template-columns:repeat(6,1fr);gap:18px}
@@ -857,7 +850,7 @@ body.mode-holiday .catalog-hero{background:linear-gradient(90deg,rgba(60,6,10,.9
 .tk-side{display:flex;flex-direction:column;gap:8px;margin-top:auto}
 .tk.hero .tk-side{align-items:flex-end;flex:none}
 .tk-price{font-weight:800;font-size:1.1rem}.tk-price small{color:var(--slate);font-weight:600;font-size:.75rem;margin-left:3px}
-.tk-add{background:#E7B84C!important;color:#2B292A!important;align-self:flex-start;padding-left:22px;padding-right:22px}
+.tk-add{align-self:flex-start;width:auto!important;padding-left:22px;padding-right:22px}
 .tk.hero .tk-add{align-self:flex-end}
 @media(max-width:900px){.tk.third{grid-column:span 3}}
 /* mobile polish (holiday) */
@@ -873,6 +866,24 @@ body.mode-holiday .catalog-hero{background:linear-gradient(90deg,rgba(60,6,10,.9
 }
 @media(max-width:560px){.themes{grid-template-columns:1fr}.tk,.tk.hero,.tk.third,.tk.half{grid-column:auto}.tk.hero .tk-body{flex-direction:column;align-items:stretch}.tk.hero .tk-img{aspect-ratio:4/3}}
 
+
+/* ===== Add to box: outline pill, soft red on hover (shared) ===== */
+.add,.gbody .gkit,.kit-f .addkit{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:40px;padding:0 20px;background:#fff;color:#2B292A;border:1px solid #D6D1CB;border-radius:999px;font-family:'Manrope',system-ui,sans-serif;font-weight:600;font-size:.86rem;line-height:1;white-space:nowrap;cursor:pointer;transition:background .15s,border-color .15s,color .15s,transform .1s}
+.card .add,.gbody .add,.gbody .gkit{width:100%}
+.add:hover,.add:focus-visible,.gbody .gkit:hover,.gbody .gkit:focus-visible,.kit-f .addkit:hover,.kit-f .addkit:focus-visible{background:var(--red-soft);border-color:var(--red-soft-edge);color:#fff;outline:none}
+.add.added,.add.added:hover{background:var(--red-soft);border-color:var(--red-soft-edge);color:#fff}
+.add:active,.gbody .gkit:active,.kit-f .addkit:active{transform:scale(.97)}
+.btn-primary#modalAdd{background:var(--red-soft)}
+/* ===== card photo gallery arrows + dots ===== */
+.gn{position:absolute;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.92);box-shadow:0 1px 4px rgba(0,0,0,.12);border:none;padding:0;display:flex;align-items:center;justify-content:center;color:var(--onyx);cursor:pointer;z-index:3;opacity:0;transition:opacity .18s}
+.gn svg{width:16px;height:16px;display:block}
+.gn.prev{left:10px}.gn.next{right:10px}
+.card:hover .gn,.gn:focus-visible{opacity:1}
+.gdots2{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:5px;z-index:3;pointer-events:none}
+.gdots2 i{width:6px;height:6px;border-radius:6px;background:#C9C4BE;transition:width .18s,background .18s}
+.gdots2 i.on{width:16px;background:var(--onyx)}
+.thumb.has-gal .more,.thumb.has-gal .var-tag,.thumb.has-gal .rank-pill{bottom:30px}
+@media(hover:none){.gn{opacity:1;width:28px;height:28px}.gn svg{width:14px;height:14px}.gn.prev{left:8px}.gn.next{right:8px}}
 </style>
 </head>
 <body>
@@ -961,7 +972,7 @@ body.mode-holiday .catalog-hero{background:linear-gradient(90deg,rgba(60,6,10,.9
   <header class="topbar">
     <div class="topbar-inner">
       <div class="logo"><img data-logo src="" alt="CompanyStore.io" /></div>
-      <div class="welcome">Welcome, <b id="welcomeName">there</b> <span id="welcomeIco">🪔</span> <button id="switchCat" class="switchcat" title="All catalogues">All catalogues</button> <button id="signOut" class="signout" title="Sign out">Not you?</button><button class="cart-top" id="cartTop" aria-label="Your box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/><path d="M2.5 3h2.2l2.2 12.4a1.5 1.5 0 0 0 1.5 1.2h8.9a1.5 1.5 0 0 0 1.5-1.2L21 7H6"/></svg><span class="count" id="cartCount">0</span></button></div>
+      <div class="welcome">Welcome, <b id="welcomeName">there</b> <span id="welcomeIco">🪔</span> <button id="switchCat" class="switchcat" title="View Diwali Catalogue"><span class="sc-full">View Diwali Catalogue</span><span class="sc-short">Diwali Catalogue</span></button> <button id="signOut" class="signout" title="Sign out">Not you?</button><button class="cart-top" id="cartTop" aria-label="Your box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/><path d="M2.5 3h2.2l2.2 12.4a1.5 1.5 0 0 0 1.5 1.2h8.9a1.5 1.5 0 0 0 1.5-1.2L21 7H6"/></svg><span class="count" id="cartCount">0</span></button></div>
     </div>
   </header>
 
@@ -1019,7 +1030,7 @@ body.mode-holiday .catalog-hero{background:linear-gradient(90deg,rgba(60,6,10,.9
       <div class="mdesc" id="modalDesc"></div>
       <ul class="feats" id="modalFeats"></ul>
       <div class="mprice" id="modalPrice"></div>
-      <button class="btn-primary" id="modalAdd">Add to your box +</button>
+      <button class="btn-primary" id="modalAdd">Add to box</button>
     </div>
   </div>
 </div>
@@ -1219,8 +1230,12 @@ function placeholder(p){
       <text x="60" y="116" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="11" fill="#fff" opacity=".85">${ini}</text>
     </svg></div>`;
 }
+function galleryImgs(p){var a=[];[p.img].concat(p.imgs||[],(p.variants||[]).map(function(v){return v.img;}),[state.mode==='holiday'?null:p.img2]).forEach(function(u){if(u&&a.indexOf(u)<0)a.push(u);});return a;}
+var CHEV_L='<svg viewBox="0 0 16 16" fill="none" stroke="#2B292A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3 5 8l5 5"/></svg>',CHEV_R='<svg viewBox="0 0 16 16" fill="none" stroke="#2B292A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3l5 5-5 5"/></svg>';
+function galControls(p){var n=galleryImgs(p).length;if(n<2)return '';return '<button type="button" class="gn prev" data-gdir="-1" aria-label="Previous photo">'+CHEV_L+'</button><button type="button" class="gn next" data-gdir="1" aria-label="Next photo">'+CHEV_R+'</button><div class="gdots2">'+Array.from({length:n},function(_,k){return '<i'+(k===0?' class="on"':'')+'></i>';}).join('')+'</div>';}
+function galStep(thumb,dir,abs){var p=PRODUCTS.find(function(x){return x.id===thumb.dataset.open;});if(!p)return;var g=galleryImgs(p),n=g.length;if(n<2)return;var i=(abs!=null?abs:(+thumb.dataset.gi||0)+dir);i=(i%n+n)%n;thumb.dataset.gi=i;var im=thumb.querySelector('img');if(im){im.onerror=function(){this.onerror=null;this.src=FALLBACK_IMG;};im.src=g[i];}thumb.querySelectorAll('.gdots2 i').forEach(function(d,k){d.classList.toggle('on',k===i);});}
 function media(p){return p.img?`<img src="${p.img}" alt="${p.name}" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=FALLBACK_IMG"/>`:placeholder(p);}
-const POD_LABEL="Price on Demand";
+const POD_LABEL="Price on Request";
 function podTag(){return '<span class="pod">'+POD_LABEL+'</span>';}
 function priceLabel(p){return p.price==null?podTag():CONFIG.currency+p.price.toLocaleString('en-IN');}
 function hasPod(items){return items.some(function(p){return p&&p.price==null;});}
@@ -1479,9 +1494,9 @@ function renderGrid(){
 function bybCard(p,i){
   const added=inBox(p.id);
   const btn=added?'<button class="add added" data-toggle="'+p.id+'">✓ In your box</button>'
-                 :'<button class="add" style="background:#E7B84C;color:#2B292A" data-toggle="'+p.id+'">Add to box +</button>';
+                 :'<button class="add" data-toggle="'+p.id+'">Add to box</button>';
   return '<article class="card" style="animation-delay:'+Math.min(i*30,300)+'ms">'+
-    '<div class="thumb" data-open="'+p.id+'">'+media(p)+'<span class="cat-tag">'+p.cat+'</span>'+(state.tab==='top10'&&p.top10?'<span class="badge-pill">#'+p.top10+' Top Pick</span>':(p.badge?'<span class="badge-pill">'+(p.icon||'⭐')+' '+p.badge+'</span>':''))+(p.variants&&p.variants.length>1?'<span class="var-tag">'+p.variants.length+' colours</span>':'')+'<span class="more">View more +</span></div>'+
+    '<div class="thumb'+(galleryImgs(p).length>1?' has-gal':'')+'" data-open="'+p.id+'" data-gi="0">'+media(p)+galControls(p)+'<span class="cat-tag">'+p.cat+'</span>'+(state.tab==='top10'&&p.top10?'<span class="badge-pill">#'+p.top10+' Top Pick</span>':(p.badge?'<span class="badge-pill">'+(p.icon||'⭐')+' '+p.badge+'</span>':''))+(p.variants&&p.variants.length>1?'<span class="var-tag">'+p.variants.length+' colours</span>':'')+'<span class="more">View more +</span></div>'+
     '<div class="card-body">'+
       '<div class="card-name">'+p.name+'</div>'+
       '<div class="card-desc">'+p.desc+'</div>'+(p.moq?'<div class="card-moq">MOQ '+p.moq+'+ units</div>':'')+
@@ -1585,7 +1600,7 @@ function kitCard(k,i){
     '<div class="kit-h"><span class="kt">'+k.items.length+'-item kit</span>'+
       '<span class="st hl" style="background:'+col+';border-color:'+col+'"><b>'+genMoney(per)+'</b> /person</span></div>'+
     '<div class="kit-i">'+items+'<button class="ki-add" onclick="addKitProduct(event,'+i+')">+<span>Add product</span></button></div>'+
-    '<div class="kit-f"><button class="addkit" style="background:'+col+'" onclick="addKitToBox('+i+')">Add to box</button>'+
+    '<div class="kit-f"><button class="add addkit" onclick="addKitToBox('+i+')">Add to box</button>'+
       '<span class="fn'+(over?' over':'')+'">'+(over?'Over band by '+genMoney(per-ctx.budget):'Uses '+Math.round(per/ctx.budget*100)+'% of the band')+'</span></div>'+
   '</div>';
 }
@@ -1675,7 +1690,7 @@ function setMode(m){
   try{history.replaceState(null,'','#'+m);}catch(err){}
   renderTopTabs();renderView();updateCartUI();
 }
-document.getElementById('switchCat').addEventListener('click',function(){location.href='../?all';});
+document.getElementById('switchCat').addEventListener('click',function(){location.href='../diwali/';});
 
 /* ---------- landing: catalogue picker ---------- */
 (function(){
@@ -1696,9 +1711,9 @@ function renderThemes(){
       '<div class="tk-img"><img src="'+k.img+'" alt="'+k.name+'" loading="lazy" onerror="this.onerror=null;this.src=FALLBACK_IMG"></div>'+
       '<div class="tk-body"><div class="tk-main"><h3>'+k.name+'</h3><p class="tk-list">'+names+'</p></div>'+
       '<div class="tk-side"><div class="tk-price">'+(hasPod(items)?podTag():genMoney(kitPrice(k))+'<small>/kit</small>')+'</div>'+
-      '<button class="add tk-add" onclick="addThemeKit('+i+')">Add to box +</button></div></div>'+
+      '<button class="add tk-add" onclick="addThemeKit('+i+')">Add to box</button></div></div>'+
     '</article>';
-  }).join('')+'</div><p class="gst-note">Kit price = sum of the item prices shown. Kits that include a Price on Demand item are quoted on request. Excluding GST, branding &amp; freight charges.</p>';
+  }).join('')+'</div><p class="gst-note">Kit price = sum of the item prices shown. Kits that include a Price on Request item are quoted on request. Excluding GST, branding &amp; freight charges.</p>';
 }
 function addThemeKit(i){
   const k=HOLIDAY_KITS[i],items=kitItems(k);if(!items.length)return;
@@ -1779,7 +1794,7 @@ function goodiesCard(p,si){
     '<div class="gbody"><div class="gname">'+p.name+'</div><div class="gdesc">'+(p.desc||'')+'</div>'+
     (p.moq?'<div class="card-moq">MOQ '+p.moq+'+ units</div>':'')+
     '<div class="gprice">'+(p.price!=null?genMoney(p.price):podTag())+'</div>'+
-    '<button class="add" data-gadd="'+p.id+'">Add to box +</button>'+
+    '<button class="add" data-gadd="'+p.id+'">Add to box</button>'+
     (kit.length>1&&!kit.every(function(x){return x.price==null;})?'<button class="gkit" data-gkit="'+si+'">Add full kit to box · '+kit.length+' items</button>':'')+
     '<button class="gview" data-gview="'+p.id+'">View details</button></div>';
 }
@@ -1890,8 +1905,12 @@ loadProducts();
 
 $('#filters').addEventListener('click',e=>{const c=e.target.closest('[data-top]');if(!c)return;switchTop(c.dataset.top);});
 $('#catControls').addEventListener('click',e=>{const c=e.target.closest('[data-ctab]');if(!c)return;state.ctab=c.dataset.ctab;renderCustomNav();renderCustom();});
-$('#grid').addEventListener('click',e=>{const tog=e.target.closest('[data-toggle]');const open=e.target.closest('[data-open]');if(tog){toggleBox(tog.dataset.toggle);}else if(open){openModal(open.dataset.open);}});
+$('#grid').addEventListener('click',e=>{const gd=e.target.closest('[data-gdir]');if(gd){e.stopPropagation();galStep(gd.closest('.thumb'),+gd.dataset.gdir);return;}if(Date.now()-(window._swipeAt||0)<400)return;const tog=e.target.closest('[data-toggle]');const open=e.target.closest('[data-open]');if(tog){toggleBox(tog.dataset.toggle);}else if(open){openModal(open.dataset.open);}});
 
+(function(){var sx=0,sy=0,th=null;var g=document.getElementById('grid');
+  g.addEventListener('touchstart',function(e){th=e.target.closest('.thumb.has-gal');if(th){sx=e.touches[0].clientX;sy=e.touches[0].clientY;}},{passive:true});
+  g.addEventListener('touchend',function(e){if(!th)return;var dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.5){window._swipeAt=Date.now();galStep(th,dx<0?1:-1);}th=null;},{passive:true});
+})();
 /* ---------- box / groups / request ---------- */
 /* ---------- box = groups (loose picks + kits) ---------- */
 function groupMax(g){return Math.max(1,...g.items.map(p=>p.moq||1));}
@@ -1922,7 +1941,7 @@ function updateCartUI(){
   if(!state.groups.length){items.innerHTML='<div class="cart-empty"><img src="'+PLUSH_URI+'" alt=""><div>Your box is empty.<br>Add products or build a kit to get started.</div></div>';foot.style.display='none';return;}
   items.innerHTML=state.groups.map((g,gi)=>groupCard(g,gi)).join('');
   foot.style.display='block';
-  $('#cartTotal').innerHTML=CONFIG.currency+boxTotal().toLocaleString('en-IN')+(state.groups.some(function(g){return hasPod(g.items);})?'<small class="pod-plus">+ Price on Demand items</small>':'');
+  $('#cartTotal').innerHTML=CONFIG.currency+boxTotal().toLocaleString('en-IN')+(state.groups.some(function(g){return hasPod(g.items);})?'<small class="pod-plus">+ Price on Request items</small>':'');
 }
 function groupCard(g,gi){
   const floor=groupMax(g),atFloor=g.emp<=floor,sub=groupSubtotal(g),accent=g.kind==='kit'?tierColor(g.tier):'var(--onyx)';
@@ -1930,7 +1949,7 @@ function groupCard(g,gi){
   const dec=atFloor?'<button class="q-dec" disabled title="Minimum '+floor+' – the box can\'t go below this">−</button>':'<button class="q-dec" onclick="setGroupQty(\''+g.id+'\',-1)">−</button>';
   const qty='<div class="cg-foot"><div class="cg-ql">'+(g.kind==='loose'?'Box quantity':'Employees')+
     '<div class="qty">'+dec+'<input type="number" value="'+g.emp+'" min="'+floor+'" onchange="setGroupQtyVal(\''+g.id+'\',this.value)"><button onclick="setGroupQty(\''+g.id+'\',1)">+</button></div></div>'+
-    '<div class="cg-sub">'+CONFIG.currency+sub.toLocaleString('en-IN')+(hasPod(g.items)?'<small class="pod-plus">+ Price on Demand items</small>':'')+'</div></div>';
+    '<div class="cg-sub">'+CONFIG.currency+sub.toLocaleString('en-IN')+(hasPod(g.items)?'<small class="pod-plus">+ Price on Request items</small>':'')+'</div></div>';
   const note=atFloor?'<div class="cg-note">Minimum order '+floor+' (highest MOQ in this '+(g.kind==='loose'?'box':'kit')+'). Can\'t go lower.</div>':'';
   return '<div class="cgroup" style="border-left:3px solid '+accent+'">'+
     '<div class="cg-h"><div><div class="cg-t">'+groupName(g,gi)+'</div><div class="cg-m">'+g.items.length+' item'+(g.items.length!==1?'s':'')+' · '+g.emp+'/unit</div></div><button class="cg-x" onclick="removeGroup(\''+g.id+'\')">Remove</button></div>'+
@@ -1976,9 +1995,9 @@ function descHtml(t){var html='',list=[];function flush(){if(list.length){html+=
 function setModalDesc(full){var el=$('#modalDesc');full=String(full||'').trim();
   if(full.indexOf('\n')>=0){el.innerHTML=descHtml(full);return;}var short=shortenDesc(full);if(short.length>=full.length){el.textContent=full;return;}state.descFull=full;state.descShort=short;el.innerHTML='<span id="mdText"></span> <button class="seemore" id="mdMore" onclick="toggleDesc()">See more</button>';document.getElementById('mdText').textContent=short+'\u2026 ';}
 function toggleDesc(){var tx=document.getElementById('mdText'),b=document.getElementById('mdMore');if(!tx||!b)return;if(b.textContent==='See more'){tx.textContent=state.descFull+' ';b.textContent='See less';}else{tx.textContent=state.descShort+'\u2026 ';b.textContent='See more';}}
-function modalAddLabel(p){return inBox(p.id)?'✓ In your box, tap to remove':'Add to box +';}
+function modalAddLabel(p){return inBox(p.id)?'✓ In your box, tap to remove':'Add to box';}
 function openModal(id){const p=PRODUCTS.find(x=>x.id===id);if(!p)return;modalProduct=p;
-  var _imgs=[];[p.img].concat(p.imgs||[],(p.variants||[]).map(function(v){return v.img;}),[state.mode==='holiday'?null:p.img2]).forEach(function(u){if(u&&_imgs.indexOf(u)<0)_imgs.push(u);});state.modalImgs=_imgs;
+  var _imgs=galleryImgs(p);state.modalImgs=_imgs;
   if(_imgs.length>1){$('#modalMedia').innerHTML='<div class="mgallery"><div class="mg-main" id="mgMain"><img src="'+_imgs[0]+'" alt="" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=FALLBACK_IMG"></div><div class="mg-thumbs">'+_imgs.map(function(u,i){return '<button class="mg-t'+(i===0?' on':'')+'" onclick="mgSwap('+i+')"><img src="'+u+'" alt="" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=FALLBACK_IMG"></button>';}).join('')+'</div></div>';}else{$('#modalMedia').innerHTML=media(p);}
   $('#modalCat').textContent=p.cat;$('#modalName').textContent=p.name;
   setModalDesc(p.longDesc||p.desc||'');$('#modalFeats').innerHTML=(p.feats||[]).map(f=>`<li>${f}</li>`).join('')+(p.variants&&p.variants.length>1?'<li class="var-row">Available colours: '+p.variants.map(function(v){var i=_imgs.indexOf(v.img);return '<button class="var-sw" onclick="mgSwap('+i+')">'+v.name+'</button>';}).join(' ')+'</li>':'');

@@ -11,7 +11,7 @@
                      (default "Holiday Goodies 1", "Holiday Goodies 2", ...).
    HOLIDAY_KITS    : "Themes" tab. items = product ids from HOLIDAY_PRODUCTS.
                      The kit price shown is the sum of its item prices.
-   HOLIDAY_PRODUCTS: imgs = extra gallery angles; pod = Price on Demand; variants = colour
+   HOLIDAY_PRODUCTS: imgs = extra gallery angles; pod = Price on Request; variants = colour
                      options [{name,img}]; top10 = Top 10 Picks rank.
                      Snapshot of the "Holiday Gifting Storelink Format"
                      sheet (Main Sheet), selling price = "Discounted Price".
@@ -127,7 +127,7 @@ const HOLIDAY_KITS = [
 ];
 
 /* imgs must be genuinely different photos (run scripts/check-gallery-dupes.js after adding any).
-   pod: true = no vendor sourcing price yet. Price shows as "Price on Demand"; set price + remove pod once sourced. */
+   pod: true = no vendor sourcing price yet. Price shows as "Price on Request"; set price + remove pod once sourced. */
 const HOLIDAY_PRODUCTS = [
  {
   "id": "h000",

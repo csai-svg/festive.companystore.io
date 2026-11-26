@@ -268,7 +268,9 @@ a{color:inherit}
   .card-desc{display:none}
   .add{padding:9px 12px;font-size:.74rem}
   .price{font-size:1rem}
-  .topbar .welcome{display:none}
+  .topbar .welcome{display:flex;gap:10px;font-size:0}
+  .topbar .welcome b,.topbar .welcome .signout,.topbar .welcome .cart-top{display:none}
+  .topbar .welcome .switchcat{font-size:.74rem;margin:0}
   .cart-fab{width:80px;bottom:18px;right:16px}
   .catalog-hero .wrap{padding:32px 18px 28px}
   .form-scroll{padding:60px 22px 120px}
@@ -316,6 +318,8 @@ a{color:inherit}
 /* MOQ note on cards / modal */
 .card-moq{font-size:.74rem;font-weight:700;color:var(--gold-deep);margin:-6px 0 10px}
 .moq-inline{font-size:.8rem;font-weight:700;color:var(--slate)}
+.switchcat .sc-short{display:none}
+@media(max-width:420px){.switchcat .sc-full{display:none}.switchcat .sc-short{display:inline}}
 .switchcat{font-size:.78rem;font-weight:700;color:var(--red);margin-left:6px;text-decoration:underline;text-underline-offset:3px}
 .signout{margin-left:8px;font-size:.72rem;font-weight:700;color:var(--red);background:none;text-decoration:underline;cursor:pointer}
 
@@ -765,7 +769,7 @@ a{color:inherit}
   <header class="topbar">
     <div class="topbar-inner">
       <div class="logo"><img data-logo src="" alt="CompanyStore.io" /></div>
-      <div class="welcome">Welcome, <b id="welcomeName">there</b> 🪔 <a id="switchCat" class="switchcat" href="../?all" title="All catalogues">All catalogues</a> <button id="signOut" class="signout" title="Sign out">Not you?</button><button class="cart-top" id="cartTop" aria-label="Your box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/><path d="M2.5 3h2.2l2.2 12.4a1.5 1.5 0 0 0 1.5 1.2h8.9a1.5 1.5 0 0 0 1.5-1.2L21 7H6"/></svg><span class="count" id="cartCount">0</span></button></div>
+      <div class="welcome">Welcome, <b id="welcomeName">there</b> 🪔 <a id="switchCat" class="switchcat" href="../holiday/" title="View Holiday Catalogue"><span class="sc-full">View Holiday Catalogue</span><span class="sc-short">Holiday Catalogue</span></a> <button id="signOut" class="signout" title="Sign out">Not you?</button><button class="cart-top" id="cartTop" aria-label="Your box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/><path d="M2.5 3h2.2l2.2 12.4a1.5 1.5 0 0 0 1.5 1.2h8.9a1.5 1.5 0 0 0 1.5-1.2L21 7H6"/></svg><span class="count" id="cartCount">0</span></button></div>
     </div>
   </header>
 
